@@ -1,11 +1,11 @@
 <template>
-  <view style="margin-bottom: 20px;">
-    <view class="book-section-title" style="font-size: 12px;display: flex;justify-content: space-between;align-items: center;">
+  <view style="margin-bottom: 40rpx;">
+    <view class="book-section-title" style="font-size: 30rpx;display: flex;justify-content: space-between;align-items: center;">
       <view>{{ title }}</view>
       <view style="color: #42BD56;">查看更多</view>
     </view>
-    <view class="book-cards-container" style="display: flex;align-items: center;justify-content: space-between;">
-      <CommonCard v-for="i in 4" :key="i"></CommonCard>
+    <view class="book-cards-container" style="margin-top: 20rpx;display: flex;align-items: center;justify-content: space-between;">
+      <CommonCard v-for="item in books" :item="item" :key="item._id"></CommonCard>
     </view>
   </view>
 </template>
@@ -21,6 +21,10 @@ export default {
     title: {
       type: String
     },
+    books: {
+      type: Array,
+      default: []
+    }
   }
 }
 </script>

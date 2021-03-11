@@ -34,7 +34,7 @@
   "tabBar": {
     "color": "#999",
     "selectedColor": "#42BD56",
-    "height": "50px",
+    "height": "100rpx",
     "list": [
       {
       "pagePath": "pages/Book",

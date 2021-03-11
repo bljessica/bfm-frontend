@@ -1,6 +1,6 @@
 <template>
   <view class="music-cards-container">
-    <CommonCard v-for="i in 20" :key="i" style="margin: auto;"></CommonCard>
+    <CommonCard v-for="music in musics" :key="musics._id" :item="music" style="margin: auto;"></CommonCard>
   </view>
 </template>
 
@@ -10,6 +10,18 @@ import CommonCard from '@/components/common/CommonCard'
 export default {
   components: {
     CommonCard
+  },
+  data () {
+    return {
+      musics: []
+    }
+  },
+  async mounted () {
+    const res = await this.$api.getAllMusics({
+      pageIdx: 1,
+      pageSize: 12
+    })
+    this.musics = res.data.data
   }
 }
 </script>
@@ -18,6 +30,7 @@ export default {
 .music-cards-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px 0;
+  gap: 30rpx 0;
+  margin-top: 20rpx;
 }
 </style>

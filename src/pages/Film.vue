@@ -1,6 +1,6 @@
 <template>
   <view class="film-cards-container">
-    <CommonCard v-for="i in 20" :key="i" style="margin: auto;"></CommonCard>
+    <CommonCard v-for="film in films" :key="films._id" :item="film" style="margin: auto;"></CommonCard>
   </view>
 </template>
 
@@ -10,6 +10,18 @@ import CommonCard from '@/components/common/CommonCard'
 export default {
   components: {
     CommonCard
+  },
+  data () {
+    return {
+      films: []
+    }
+  },
+  async mounted () {
+    const res = await this.$api.getAllFilms({
+      pageIdx: 1,
+      pageSize: 12
+    })
+    this.films = res.data.data
   }
 }
 </script>
@@ -18,6 +30,7 @@ export default {
 .film-cards-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px 0;
+  gap: 30rpx 0;
+  margin-top: 20rpx;
 }
 </style>
