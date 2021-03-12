@@ -1,6 +1,6 @@
 <template>
   <view class="music-cards-container">
-    <CommonCard v-for="music in musics" :key="musics._id" :item="music" style="margin: auto;"></CommonCard>
+    <CommonCard kind="music" v-for="music in musics" :key="musics._id" :item="music" style="margin: auto;"></CommonCard>
   </view>
 </template>
 

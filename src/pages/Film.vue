@@ -1,6 +1,6 @@
 <template>
   <view class="film-cards-container">
-    <CommonCard v-for="film in films" :key="films._id" :item="film" style="margin: auto;"></CommonCard>
+    <CommonCard kind="film" v-for="film in films" :key="films._id" :item="film" style="margin: auto;"></CommonCard>
   </view>
 </template>
 

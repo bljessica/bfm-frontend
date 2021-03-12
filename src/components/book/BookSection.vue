@@ -5,7 +5,7 @@
       <view style="color: #42BD56;">查看更多</view>
     </view>
     <view class="book-cards-container" style="margin-top: 20rpx;display: flex;align-items: center;justify-content: space-between;">
-      <CommonCard v-for="item in books" :item="item" :key="item._id"></CommonCard>
+      <CommonCard kind="book" v-for="item in books" :item="item" :key="item._id"></CommonCard>
     </view>
   </view>
 </template>

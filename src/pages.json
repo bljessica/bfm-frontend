@@ -30,6 +30,14 @@
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
+		},
+    {
+			"path": "pages/Detail",
+			"style": {
+				"navigationBarTitleText": "详情",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

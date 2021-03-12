@@ -1,5 +1,14 @@
 import request from './common/request'
 
+// detail
+export const getDetailById = (data) => {
+  return request({
+    url: '/detailById',
+    data,
+    method: 'GET'
+  })
+}
+
 // film
 export const getAllFilms = (data) => {
   return request({
