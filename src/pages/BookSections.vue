@@ -27,9 +27,6 @@ export default {
       const res = await this.$api.getAllBooksByType({ bookType: title, pageIdx: 1, pageSize: 4})
       this.$set(this.books, title, res.data.data)
     })
-  },
-  methods: {
-
   }
 }
 </script>

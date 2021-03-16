@@ -1,6 +1,9 @@
 <template>
-  <view class="music-cards-container" style="background: #FEFEFE;">
-    <CommonCard kind="music" v-for="music in musics" :key="musics._id" :item="music" style="margin: auto;"></CommonCard>
+  <view>
+    <view class="music-cards-container" style="background: #FEFEFE;margin-bottom: 20rpx;">
+      <CommonCard kind="music" v-for="music in musics" :key="music._id" :item="music" style="margin: auto;"></CommonCard>
+    </view>
+    <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
   </view>
 </template>
 
@@ -13,15 +16,33 @@ export default {
   },
   data () {
     return {
-      musics: []
+      musics: [],
+      pagination: {
+        pageIdx: 1,
+        pageSize: 12,
+      },
+      totalPage: 0
     }
   },
-  async mounted () {
-    const res = await this.$api.getAllMusics({
-      pageIdx: 1,
-      pageSize: 12
-    })
-    this.musics = res.data.data
+  watch: {
+    pagination: {
+      async handler (val) {
+        const res = await this.$api.getAllMusics(val)
+        this.musics = res.data.data
+        this.totalPage = res.data.total
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  methods: {
+    pageChange ({type}) {
+      if (type === 'next') {
+        this.pagination.pageIdx += 1
+      } else if (type === 'prev') {
+        this.pagination.pageIdx -= 1
+      }
+    }
   }
 }
 </script>

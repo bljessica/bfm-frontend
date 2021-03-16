@@ -29,7 +29,7 @@
       </view>
     </view>
     <!-- 简介 -->
-    <view style="width: 90%;margin: 60rpx auto;">
+    <view style="width: 95%;margin: 60rpx auto;">
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">简介</view>
       <view style="font-size: 22rpx;line-height: 40rpx;">{{item.introduction || '暂无'}}</view>
     </view>
@@ -81,7 +81,7 @@ export default {
 <style lang="scss" scoped>
 .detail-title {
   margin: 0 auto;
-  width: 90%;
+  width: 95%;
   display: grid;
   height: 240rpx;
   gap: 20rpx;
@@ -132,13 +132,13 @@ export default {
   justify-content: space-evenly;
   background: white;
   border-radius: 10rpx;
-  width: 90%;
+  width: 95%;
   height: 150rpx;
   margin: 20rpx auto;
 }
 .brief-comments-container {
   font-size: 22rpx;
-  width: 90%;
+  width: 95%;
   margin: 60rpx auto;
   background: #fff;
   border-radius: 10rpx;

@@ -1,7 +1,7 @@
 <template>
   <view>
-    <view class="film-cards-container" style="background: #FEFEFE;margin-bottom: 20rpx;">
-      <CommonCard kind="film" v-for="film in films" style="margin: auto;" :key="film._id" :item="film"></CommonCard>
+    <view class="book-cards-container" style="background: #FEFEFE;margin-bottom: 20rpx;">
+      <CommonCard kind="book" v-for="book in books" :key="book._id" :item="book" style="margin: auto;"></CommonCard>
     </view>
     <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
   </view>
@@ -16,7 +16,7 @@ export default {
   },
   data () {
     return {
-      films: [],
+      books: [],
       pagination: {
         pageIdx: 1,
         pageSize: 12,
@@ -26,14 +26,16 @@ export default {
   },
   watch: {
     pagination: {
-      async handler (val) {
-        const res = await this.$api.getAllFilms(val)
-        this.films = res.data.data
-        this.totalPage = res.data.total
+      async handler () {
+        await this.getBooks()
       },
       deep: true,
       immediate: true
     }
+  },
+  async onLoad (option) {
+    this.bookType = option.bookType
+    await this.getBooks()
   },
   methods: {
     pageChange ({type}) {
@@ -42,19 +44,24 @@ export default {
       } else if (type === 'prev') {
         this.pagination.pageIdx -= 1
       }
+    },
+    async getBooks () {
+      const res = await this.$api.getAllBooksByType({
+          ...this.pagination,
+          bookType: this.bookType
+        })
+        this.books = res.data.data
+        this.totalPage = res.data.total
     }
   }
 }
 </script>
 
 <style scoped>
-.film-cards-container {
+.book-cards-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 30rpx 0;
   margin-top: 20rpx;
 }
-.uni-pagination{ 
-  width: 100%; 
-} 
 </style>

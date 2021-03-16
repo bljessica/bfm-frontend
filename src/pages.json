@@ -8,7 +8,13 @@
   },
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/Book",
+			"path": "pages/BookSections",
+			"style": {
+				"navigationBarTitleText": "书影音社区"
+			}
+		},
+    {
+			"path": "pages/Books",
 			"style": {
 				"navigationBarTitleText": "书影音社区"
 			}
@@ -49,10 +55,9 @@
   "tabBar": {
     "color": "#999",
     "selectedColor": "#42BD56",
-    "height": "100rpx",
     "list": [
       {
-      "pagePath": "pages/Book",
+      "pagePath": "pages/BookSections",
       "iconPath": "static/images/book.png",
       "selectedIconPath": "static/images/book_on.png",
       "text": "书籍"
