@@ -1,5 +1,5 @@
 <template>
-  <view class="music-cards-container">
+  <view class="music-cards-container" style="background: #FEFEFE;">
     <CommonCard kind="music" v-for="music in musics" :key="musics._id" :item="music" style="margin: auto;"></CommonCard>
   </view>
 </template>

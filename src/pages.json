@@ -35,7 +35,7 @@
 			"path": "pages/Detail",
 			"style": {
 				"navigationBarTitleText": "详情",
-        "navigationBarBackgroundColor": "#fff",
+        "navigationBarBackgroundColor": "#F3F7F6",
         "navigationBarTextStyle": "black"
 			}
 		}

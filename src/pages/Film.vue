@@ -1,5 +1,5 @@
 <template>
-  <view class="film-cards-container">
+  <view class="film-cards-container" style="background: #FEFEFE;">
     <CommonCard kind="film" v-for="film in films" :key="films._id" :item="film" style="margin: auto;"></CommonCard>
   </view>
 </template>
