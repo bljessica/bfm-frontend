@@ -20,27 +20,34 @@ export default {
     }
   },
   onLoad () {
-    let that = this;
-    // 查看是否授权
-    wx.getSetting({
-      success (res){
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function(res) {
-              console.log('获取用户信息成功', res)
-              that.userInfo = res.userInfo
-            }
-          })
-        }else{
-          console.log('获取用户信息失败')
+    let userInfo = wx.getStorageSync('userInfo')
+    if (userInfo) {
+      this.userInfo = JSON.parse(userInfo)
+    } else {
+      let that = this;
+      // 查看是否授权
+      wx.getSetting({
+        success (res){
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+            wx.getUserInfo({
+              success: function(res) {
+                console.log('获取用户信息成功', res)
+                that.userInfo = res.userInfo
+                wx.setStorageSync('userInfo', JSON.stringify(res.userInfo))
+              }
+            })
+          }else{
+            console.log('获取用户信息失败')
+          }
         }
-      }
-    })
+      })
+    }
+    
   },
   methods: {
     bindGetUserInfo: function(e) {
-      console.log(e.detail.userInfo, 111)
+      // console.log(e.detail.userInfo, 111)
     }
   }
 }
