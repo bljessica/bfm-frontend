@@ -53,3 +53,11 @@ export const addOrUpdateRecord = (data) => {
     method: 'POST'
   })
 }
+
+export const getComments = (data) => {
+  return request({
+    url: '/getComments',
+    data,
+    method: 'GET'
+  })
+}

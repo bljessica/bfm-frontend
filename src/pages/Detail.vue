@@ -37,9 +37,24 @@
     <view class="brief-comments-container">
       <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="font-size: 30rpx;font-weight: bold;">短评</span>
-        <span style="font-size: 20rpx;">全部 100
+        <span style="font-size: 20rpx;">全部 {{comments.length}}
           <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
         </span>
+      </view>
+      <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;" v-for="comment in comments" :key="comments._id">
+        <view class="comment-user-info">
+          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.users.avatarUrl"></image>
+          <view style="grid-area: b;">{{comment.users.nickName}}</view>
+          <view style="grid-area: c;display: flex;align-items: center;">
+            <uni-rate allow-half :size="8" :value="comment.score / 2"/>
+            <span style="font-size: 18rpx;color: #999;margin-left: 10rpx;">{{formatCommentTime(comment.afterCommentTime)}}</span>
+          </view>
+        </view>
+        <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{commentsType === 'want' ? comment.wantComment : item.afterComment}}</view>
+        <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
+          <image src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
+          {{commentsType === 'want' ? comment.wantCommentLikedNum : item.afterCommentLikedNum}}
+        </view>
       </view>
     </view>
   </view>
@@ -47,6 +62,7 @@
 
 <script>
 import { uniRate } from '@dcloudio/uni-ui'
+import dayjs from 'dayjs'
 
 export default {
   components: {
@@ -56,23 +72,25 @@ export default {
     return {
       item: null,
       kind: null,
-      status: null
+      status: null,
+      _id: null,
+      commentsType: 'want',
+      comments: []
     }
   },
   async onLoad (options) {
-    const res = await this.$api.getDetailById({
-      ...options,
-      openid: getApp().globalData.openid
-    })
-    this.item = res.data.data
-    this.status = res.data.status
     this.kind = options.kind
+    this._id = options._id
   },
   async onShow () {
     await this.getStatus()
+    await this.getComments()
   },
   computed: {
     briefIntroduction() {
+      if (!this.item) {
+        return '暂无'
+      }
       if (this.kind === 'book') {
         return ('作者：' + this.item.author) || '暂无'
       } else if (this.kind === 'film') {
@@ -84,15 +102,31 @@ export default {
     }
   },
   methods: {
-    async getStatus () {
-      if (!this.item) {
-        return
+    formatCommentTime (time) {
+      if (time.substring(0, 4) === dayjs().format('YYYY')) {
+        return time.substring(5)
       }
-      const res = await this.$api.getDetailById({
+      return time
+    },
+    async getComments () {
+      const res = await this.$api.getComments({
         kind: this.kind,
-        _id: this.item._id,
+        name: this.item.name,
         openid: getApp().globalData.openid
       })
+      this.comments = res.data.data.filter(item => {
+        return (this.commentsType === 'want') ? item.wantComment : item.afterComment
+      })
+    },
+    async getStatus () {
+      const res = await this.$api.getDetailById({
+        kind: this.kind,
+        _id: this._id,
+        openid: getApp().globalData.openid
+      })
+      if (!this.item) {
+        this.item = res.data.data
+      }
       this.status = res.data.status
     },
     async addOrUpdateRecord (status) {
@@ -192,5 +226,15 @@ export default {
   border-radius: 10rpx;
   box-sizing: border-box;
   padding: 20rpx;
+}
+.comment-user-info {
+  margin-top: 20rpx;
+  height: 50rpx;
+  display: grid;
+  grid-template-areas: 'a b'
+                       'a c';
+  grid-template-columns: 50rpx 1fr;
+  grid-template-rows: 1.5fr 1fr;
+  gap: 5rpx 10rpx;
 }
 </style>
