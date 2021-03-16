@@ -6,17 +6,17 @@
       <h3>{{item.name}}</h3>
       <view class="detail-title__introduction">{{briefIntroduction}}</view>
       <view class="detail-title__buttons" style="grid-area: d / d / e / e;display: flex;justify-content: space-between;">
-        <view class="detail-title__button">
-          <image src="/static/images/want-read.png" style="width: 30rpx;height: 30rpx;"></image>
-          <view>想看</view>
+        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'want'}" @click="addOrUpdateRecord('want')">
+          <image v-if="status !== 'want'" src="/static/images/want-read.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
+          <view>{{status === 'want' ? '已' : ''}}想{{kind === 'music' ? '听' : '看'}}</view>
         </view>
-        <view class="detail-title__button">
-          <image src="/static/images/reading.png" style="width: 28rpx;height: 28rpx;"></image>
-          <view>在看</view>
+        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'doing'}" @click="addOrUpdateRecord('doing')">
+          <image v-if="status !== 'doing'" src="/static/images/reading.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
+          <view>{{status === 'doing' ? '已' : ''}}在{{kind === 'music' ? '听' : '看'}}</view>
         </view>
-        <view class="detail-title__button">
-          <image src="/static/images/have-read.png" style="width: 35rpx;height: 35rpx;position: relative;top: -2rpx;"></image>
-          <view>看过</view>
+        <view class="detail-title__button detail-title__button-after" :class="{'detail-title__button--on-status': status === 'after'}" @click="addOrUpdateRecord(status === 'after' ? 'none' : 'after')">
+          <image v-if="status !== 'after'" src="/static/images/have-read.png" style="width: 35rpx;height: 35rpx;margin-right: 4rpx;position: relative;top: -2rpx;"></image>
+          <view>{{status === 'after' ? '已' : ''}}{{kind === 'music' ? '听' : '看'}}过</view>
         </view>
       </view>
     </view>
@@ -55,24 +55,67 @@ export default {
   data () {
     return {
       item: null,
-      kind: null
+      kind: null,
+      status: null
     }
   },
-  async onLoad (option) {
-    const res = await this.$api.getDetailById(option)
+  async onLoad (options) {
+    const res = await this.$api.getDetailById({
+      ...options,
+      openid: getApp().globalData.openid
+    })
     this.item = res.data.data
-    this.kind = option.kind
+    this.status = res.data.status
+    this.kind = options.kind
+  },
+  async onShow () {
+    await this.getStatus()
   },
   computed: {
     briefIntroduction() {
       if (this.kind === 'book') {
-        return this.item.author || '暂无'
+        return ('作者：' + this.item.author) || '暂无'
       } else if (this.kind === 'film') {
         return this.item.relatedInfo || '暂无'
       } else if (this.kind === 'music') {
-        return ('[歌手]' + this.item.singer) || '暂无'
+        return ('歌手：' + this.item.singer) || '暂无'
       }
       return '暂无'
+    }
+  },
+  methods: {
+    async getStatus () {
+      if (!this.item) {
+        return
+      }
+      const res = await this.$api.getDetailById({
+        kind: this.kind,
+        _id: this.item._id,
+        openid: getApp().globalData.openid
+      })
+      this.status = res.data.status
+    },
+    async addOrUpdateRecord (status) {
+      console.log(status)
+      if (status === 'doing' || status === 'none') {
+        await this.$api.addOrUpdateRecord({
+          openid: getApp().globalData.openid,
+          kind: this.kind,
+          name: this.item.name,
+          status
+        })
+        await this.getStatus()
+      } else {
+        let pageName = ''
+        if (status === 'want') {
+          pageName = 'WantComment'
+        } else {
+          pageName = 'AfterComment'
+        }
+        uni.navigateTo({
+          url: pageName + '?kind=' + this.kind + '&name=' + escape(this.item.name)
+        })
+      }
     }
   }
 }
@@ -89,7 +132,7 @@ export default {
   grid-template-areas: 'a b b' 
                        'a c c' 
                        'a d e';
-  grid-template-columns: 1fr 1.5fr 1.5fr;
+  grid-template-columns: 1.2fr 1.5fr 1.5fr;
   grid-template-rows: repeat(3, 1fr);
   &>h3 {
     grid-area:b;
@@ -112,7 +155,6 @@ export default {
 .detail-title__button {
   font-weight: bold;
   box-sizing: border-box;
-  padding: 20rpx;
   width: 120rpx;
   height: 50rpx;
   line-height: 50rpx;
@@ -121,10 +163,16 @@ export default {
   background-color: #fff;
   border-radius: 10rpx;
   border-bottom: 1px solid #ccc;
-  text-align: center;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  &.detail-title__button--on-status {
+    background-color: rgb(224, 224, 224);
+    color: rgb(177, 176, 176);
+    &.detail-title__button-after {
+      width: 100%;
+    }
+  }
 }
 .detail-score {
   display: flex;

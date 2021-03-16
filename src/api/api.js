@@ -44,3 +44,12 @@ export const addUser = (data) => {
     method: 'POST'
   })
 }
+
+// record
+export const addOrUpdateRecord = (data) => {
+  return request({
+    url: '/addOrUpdateRecord',
+    data,
+    method: 'POST'
+  })
+}

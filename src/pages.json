@@ -44,6 +44,22 @@
         "navigationBarBackgroundColor": "#F3F7F6",
         "navigationBarTextStyle": "black"
 			}
+		},
+    {
+			"path": "pages/WantComment",
+			"style": {
+				"navigationBarTitleText": "想看",
+        "navigationBarBackgroundColor": "#F3F7F6",
+        "navigationBarTextStyle": "black"
+			}
+		},
+    {
+			"path": "pages/AfterComment",
+			"style": {
+				"navigationBarTitleText": "看过",
+        "navigationBarBackgroundColor": "#F3F7F6",
+        "navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
