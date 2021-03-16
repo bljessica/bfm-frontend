@@ -31,10 +31,14 @@ export default {
           if (res.authSetting['scope.userInfo']) {
             // 已经授权，可以直接调用 getUserInfo 获取头像昵称
             wx.getUserInfo({
-              success: function(res) {
+              success: async function(res) {
                 console.log('获取用户信息成功', res)
                 that.userInfo = res.userInfo
                 wx.setStorageSync('userInfo', JSON.stringify(res.userInfo))
+                await that.$api.addUser({
+                  ...res.userInfo,
+                  openid: getApp().globalData.openid
+                })
               }
             })
           }else{

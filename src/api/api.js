@@ -35,3 +35,12 @@ export const getAllBooksByType = (data) => {
     method: 'GET'
   })
 }
+
+// user
+export const addUser = (data) => {
+  return request({
+    url: '/addUser',
+    data,
+    method: 'POST'
+  })
+}
