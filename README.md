@@ -1,19 +1,20 @@
 # bfm_frontend
 
-## Project setup
+## 运行
+
+### 安装依赖
 ```
+cd bfm_frontend
+
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### 开发环境热更新
 ```
 npm run dev:mp-weixin
 ```
 
-### Compiles and minifies for production
+### 生产打包
 ```
 npm run build:mp-weixin
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
