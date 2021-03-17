@@ -1,7 +1,7 @@
 <template>
   <view>
     <textarea class="want-comment" placeholder="记录一下想看的理由" v-model="wantComment"></textarea>
-    <button type="primary" style="width: 90%;" @click="addOrUpdateRecord">确定</button>
+    <button type="primary" style="width: 90%;" @click="addRecord">确定</button>
   </view>
 </template>
 
@@ -21,14 +21,14 @@ export default {
     this.name = unescape(options.name)
   },
   methods: {
-    async addOrUpdateRecord () {
-      const res = await this.$api.addOrUpdateRecord({
+    async addRecord () {
+      const res = await this.$api.addRecord({
         openid: getApp().globalData.openid,
         kind: this.kind,
         name: this.name,
         status: 'want',
-        wantComment: this.wantComment,
-        wantCommentTime: dayjs().format('YYYY年MM月DD日')
+        comment: this.wantComment,
+        commentTime: dayjs().format('YYYY年MM月DD日 HH:MM:ss')
       })
       if (res.data.code === 0) {
         uni.showToast({

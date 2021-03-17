@@ -83,7 +83,6 @@
     "jest": "^25.4.0",
     "mini-types": "*",
     "miniprogram-api-typings": "*",
-    "node-sass": "^5.0.0",
     "postcss-comment": "^2.0.0",
     "sass": "^1.32.8",
     "sass-loader": "^10.1.1",

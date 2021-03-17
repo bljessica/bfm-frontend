@@ -1,9 +1,9 @@
 import request from './common/request'
 
 // detail
-export const getDetailById = (data) => {
+export const getDetail = (data) => {
   return request({
-    url: '/detailById',
+    url: '/detail',
     data,
     method: 'GET'
   })
@@ -46,9 +46,9 @@ export const addUser = (data) => {
 }
 
 // record
-export const addOrUpdateRecord = (data) => {
+export const addRecord = (data) => {
   return request({
-    url: '/addOrUpdateRecord',
+    url: '/addRecord',
     data,
     method: 'POST'
   })
@@ -59,5 +59,14 @@ export const getComments = (data) => {
     url: '/getComments',
     data,
     method: 'GET'
+  })
+}
+
+// likeComment
+export const likeOrUnlikeComment = (data) => {
+  return request({
+    url: '/likeOrUnlikeComment',
+    data,
+    method: 'PUT'
   })
 }

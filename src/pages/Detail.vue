@@ -1,20 +1,20 @@
 <template>
-  <view style="background: #F3F7F6;">
+  <view style="background: #F3F7F6;min-height: 100vh;">
     <!-- 信息 -->
     <view class="detail-title">
       <image :src="item.coverSrc" style="width: 180rpx;height: 240rpx;grid-area: a;"></image>
       <h3>{{item.name}}</h3>
       <view class="detail-title__introduction">{{briefIntroduction}}</view>
       <view class="detail-title__buttons" style="grid-area: d / d / e / e;display: flex;justify-content: space-between;">
-        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'want'}" @click="addOrUpdateRecord('want')">
+        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'want'}" @click="addRecord('want')">
           <image v-if="status !== 'want'" src="/static/images/want-read.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
           <view>{{status === 'want' ? '已' : ''}}想{{kind === 'music' ? '听' : '看'}}</view>
         </view>
-        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'doing'}" @click="addOrUpdateRecord('doing')">
+        <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'doing'}" @click="addRecord('doing')">
           <image v-if="status !== 'doing'" src="/static/images/reading.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
           <view>{{status === 'doing' ? '已' : ''}}在{{kind === 'music' ? '听' : '看'}}</view>
         </view>
-        <view class="detail-title__button detail-title__button-after" :class="{'detail-title__button--on-status': status === 'after'}" @click="addOrUpdateRecord(status === 'after' ? 'none' : 'after')">
+        <view class="detail-title__button detail-title__button-after" :class="{'detail-title__button--on-status': status === 'after'}" @click="addRecord(status === 'after' ? 'none' : 'after')">
           <image v-if="status !== 'after'" src="/static/images/have-read.png" style="width: 35rpx;height: 35rpx;margin-right: 4rpx;position: relative;top: -2rpx;"></image>
           <view>{{status === 'after' ? '已' : ''}}{{kind === 'music' ? '听' : '看'}}过</view>
         </view>
@@ -35,26 +35,34 @@
     </view>
     <!-- 短评 -->
     <view class="brief-comments-container">
+      <!-- 标题 -->
       <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="font-size: 30rpx;font-weight: bold;">短评</span>
         <span style="font-size: 20rpx;">全部 {{comments.length}}
           <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
         </span>
       </view>
-      <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;" v-for="comment in comments" :key="comments._id">
+      <!-- 评论 -->
+      <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;" v-for="comment in comments" :key="comment._id">
         <view class="comment-user-info">
-          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.users.avatarUrl"></image>
-          <view style="grid-area: b;">{{comment.users.nickName}}</view>
+          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl"></image>
+          <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
           <view style="grid-area: c;display: flex;align-items: center;">
-            <uni-rate allow-half :size="8" :value="comment.score / 2"/>
-            <span style="font-size: 18rpx;color: #999;margin-left: 10rpx;">{{formatCommentTime(comment.afterCommentTime)}}</span>
+            <uni-rate v-if="comment.score" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
+            <span style="font-size: 18rpx;color: #999;">{{formatCommentTime(comment.commentTime)}}</span>
           </view>
         </view>
-        <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{commentsType === 'want' ? comment.wantComment : item.afterComment}}</view>
+        <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{comment.comment}}</view>
         <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
-          <image src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
-          {{commentsType === 'want' ? comment.wantCommentLikedNum : item.afterCommentLikedNum}}
+          <image @click="likeOrUnlikeComment(comment._id)" v-if="!comment.liked" src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
+          <image @click="likeOrUnlikeComment(comment._id)" v-if="comment.liked" src="/static/images/good-on.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
+          {{comment.commentLikedNum}}
         </view>
+      </view>
+      <!-- 查看全部 -->
+      <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;">
+        <view style="font-weight: bold;">查看全部短评</view>
+        <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;"></image>
       </view>
     </view>
   </view>
@@ -83,7 +91,7 @@ export default {
     this._id = options._id
   },
   async onShow () {
-    await this.getStatus()
+    await this.getDetail()
     await this.getComments()
   },
   computed: {
@@ -104,22 +112,28 @@ export default {
   methods: {
     formatCommentTime (time) {
       if (time.substring(0, 4) === dayjs().format('YYYY')) {
-        return time.substring(5)
+        return time.substring(5, 11)
       }
-      return time
+      return time.substring(0, 11)
+    },
+    async likeOrUnlikeComment(_id) {
+      await this.$api.likeOrUnlikeComment({
+        recordId: _id,
+        openid: getApp().globalData.openid
+      })
+      await this.getComments()
     },
     async getComments () {
       const res = await this.$api.getComments({
+        status: this.commentsType,
         kind: this.kind,
         name: this.item.name,
         openid: getApp().globalData.openid
       })
-      this.comments = res.data.data.filter(item => {
-        return (this.commentsType === 'want') ? item.wantComment : item.afterComment
-      })
+      this.comments = res.data.data
     },
-    async getStatus () {
-      const res = await this.$api.getDetailById({
+    async getDetail () {
+      const res = await this.$api.getDetail({
         kind: this.kind,
         _id: this._id,
         openid: getApp().globalData.openid
@@ -129,16 +143,15 @@ export default {
       }
       this.status = res.data.status
     },
-    async addOrUpdateRecord (status) {
-      console.log(status)
+    async addRecord (status) {
       if (status === 'doing' || status === 'none') {
-        await this.$api.addOrUpdateRecord({
+        await this.$api.addRecord({
           openid: getApp().globalData.openid,
           kind: this.kind,
           name: this.item.name,
           status
         })
-        await this.getStatus()
+        await this.getDetail()
       } else {
         let pageName = ''
         if (status === 'want') {
@@ -226,6 +239,7 @@ export default {
   border-radius: 10rpx;
   box-sizing: border-box;
   padding: 20rpx;
+  padding-bottom: 0;
 }
 .comment-user-info {
   margin-top: 20rpx;
