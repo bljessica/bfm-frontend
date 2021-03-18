@@ -27,6 +27,13 @@
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">简介</view>
       <view style="font-size: 22rpx;line-height: 40rpx;">{{item.introduction || '暂无'}}</view>
     </view>
+    <!-- 影人 -->
+    <view style="width: 95%;margin: 60rpx auto;" v-if="kind === 'film'">
+      <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">影人</view>
+      <view style="font-size: 22rpx;line-height: 40rpx;">
+        {{item.director}}<br />{{item.actors}}
+      </view>
+    </view>
     <!-- 短评 -->
     <view class="brief-comments-container" v-if="comments.length">
       <!-- 标题 -->
@@ -83,11 +90,11 @@ export default {
         return '暂无'
       }
       if (this.kind === 'book') {
-        return ('作者：' + this.item.author) || '暂无'
+        return `${this.item.author} / ${this.item.publisher} / 出版时间：${this.item.publishTime}` || '暂无'
       } else if (this.kind === 'film') {
-        return this.item.relatedInfo || '暂无'
+        return `${this.item.type} / ${this.item.country}` || '暂无'
       } else if (this.kind === 'music') {
-        return ('歌手：' + this.item.singer) || '暂无'
+        return `${this.item.type} / 表演者：${this.item.singer} / 发行时间：${this.item.publishTime}` || '暂无'
       }
       return '暂无'
     }
@@ -157,7 +164,7 @@ export default {
                        'a c c' 
                        'a d e';
   grid-template-columns: 1.2fr 1.5fr 1.5fr;
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr 2fr;
   &>h3 {
     grid-area:b;
     font-size: 40rpx;
@@ -168,8 +175,10 @@ export default {
   }
 }
 .detail-title__introduction {
+  height: 100%;
   grid-area:c;
-  font-size: 20rpx;
+  font-size: 18rpx;
+  color: #999;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

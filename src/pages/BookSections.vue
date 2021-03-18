@@ -27,7 +27,7 @@ export default {
   mounted () {
     this.loading = true
     this.bookSectionTitles.forEach(async(title) => {
-      const res = await this.$api.getAllBooksByType({ bookType: title, pageIdx: 1, pageSize: 4})
+      const res = await this.$api.getAllBooksByType({ type: title, pageIdx: 1, pageSize: 4})
       this.$set(this.books, title, res.data.data)
     })
     this.loading = false

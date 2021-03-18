@@ -34,7 +34,7 @@
     {
 			"path": "pages/Mine",
 			"style": {
-				"navigationBarTitleText": "我的"
+				"navigationBarTitleText": "书影音档案"
 			}
 		},
     {

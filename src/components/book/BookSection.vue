@@ -32,7 +32,7 @@ export default {
   methods: {
     goToBookType () {
       uni.navigateTo({
-        url: 'Books?bookType=' + this.title
+        url: 'Books?type=' + this.title
       })
     }
   }

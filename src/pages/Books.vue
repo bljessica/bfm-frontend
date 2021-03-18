@@ -21,7 +21,8 @@ export default {
         pageIdx: 1,
         pageSize: 12,
       },
-      totalPage: 0
+      totalPage: 0,
+      type: ''
     }
   },
   watch: {
@@ -34,7 +35,7 @@ export default {
     }
   },
   async onLoad (option) {
-    this.bookType = option.bookType
+    this.type = option.type
     await this.getBooks()
   },
   methods: {
@@ -48,7 +49,7 @@ export default {
     async getBooks () {
       const res = await this.$api.getAllBooksByType({
           ...this.pagination,
-          bookType: this.bookType
+          type: this.type
         })
         this.books = res.data.data
         this.totalPage = res.data.total
