@@ -6,6 +6,7 @@
     <view class="book-sections-container" style="width: 90%;margin: 20rpx auto 0;">
       <BookSection v-for="item in bookSectionTitles" :key="item" :books="books[item]" :title="item"></BookSection>
     </view>
+    <uni-load-more v-if="loading" status="loading"></uni-load-more>
 	</view>
 </template>
 
@@ -19,14 +20,17 @@ export default {
   data() {
     return {
       bookSectionTitles: ['名著', '计算机图书', '小说'],
-      books: {}
+      books: {},
+      loading: false
     }
   },
   mounted () {
-     this.bookSectionTitles.forEach(async(title) => {
+    this.loading = true
+    this.bookSectionTitles.forEach(async(title) => {
       const res = await this.$api.getAllBooksByType({ bookType: title, pageIdx: 1, pageSize: 4})
       this.$set(this.books, title, res.data.data)
     })
+    this.loading = false
   }
 }
 </script>

@@ -38,13 +38,14 @@
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getComments="getComments" v-for="comment in comments" :key="comment._id"></BriefComment>
+      <uni-load-more v-if="loading" status="loading"></uni-load-more>
       <!-- 查看全部 -->
       <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
         <view style="font-weight: bold;">查看全部短评</view>
         <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;"></image>
       </view>
     </view>
-    <view v-else class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>
+    <view v-if="!loading && !comments.length" class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>
   </view>
 </template>
 
@@ -64,7 +65,8 @@ export default {
       status: null,
       _id: null,
       commentsType: 'want',
-      comments: []
+      comments: [],
+      loading: false
     }
   },
   async onLoad (options) {
@@ -97,6 +99,7 @@ export default {
       })
     },
     async getComments () {
+      this.loading = true
       const res = await this.$api.getComments({
         status: this.commentsType,
         kind: this.kind,
@@ -104,6 +107,7 @@ export default {
         openid: getApp().globalData.openid
       })
       this.comments = res.data.data
+      this.loading = false
     },
     async getDetail () {
       const res = await this.$api.getDetail({

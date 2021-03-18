@@ -4,6 +4,7 @@
       <CommonCard kind="music" v-for="music in musics" :key="music._id" :item="music" style="margin: auto;"></CommonCard>
     </view>
     <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
+    <uni-load-more v-if="loading" status="loading"></uni-load-more>
   </view>
 </template>
 
@@ -21,15 +22,18 @@ export default {
         pageIdx: 1,
         pageSize: 12,
       },
-      totalPage: 0
+      totalPage: 0,
+      loading: false
     }
   },
   watch: {
     pagination: {
       async handler (val) {
+        this.loading = true
         const res = await this.$api.getAllMusics(val)
         this.musics = res.data.data
-        this.totalPage = res.data.total
+        this.totalPage = res.data.total,
+        this.loading = false
       },
       deep: true,
       immediate: true
