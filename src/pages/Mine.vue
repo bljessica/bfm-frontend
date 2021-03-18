@@ -1,13 +1,18 @@
 <template>
   <view>
     <view class="user-info-container">
-      <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 180rpx;height: 180rpx;border-radius: 50%;"></image>
-      <view class="user-info-container__name" style="font-size: 40rpx;">
+      <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;"></image>
+      <view class="user-info-container__name" style="font-size: 34rpx;color: white;">
         {{(userInfo && userInfo.nickName) ? userInfo.nickName : '未登录'}}
       </view>
+      <!-- 登出按钮 -->
+      <view class="user-info-container__log-out-btn" @click="logOut" v-if="userInfo">
+        <image src="/static/images/quit.png" style="width: 24rpx;height: 24rpx;margin-right: 6rpx;"></image>
+        <span>退出</span>
+      </view>
     </view>
-    <!-- 需要使用 button 来授权登录 -->
-    <button v-if="canIUse && !userInfo" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+    <button @click="logIn" v-if="!userInfo">授权登录</button>
+    <uni-load-more v-if="loading" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
   </view>
 </template>
 
@@ -15,43 +20,59 @@
 export default {
   data () {
     return {
-      canIUse: wx.canIUse('button.open-type.getUserInfo'),
-      userInfo: null
+      userInfo: null,
+      loading: false
     }
-  },
-  onLoad () {
-    let userInfo = wx.getStorageSync('userInfo')
-    if (userInfo) {
-      this.userInfo = JSON.parse(userInfo)
-    } else {
-      let that = this;
-      // 查看是否授权
-      wx.getSetting({
-        success (res){
-          if (res.authSetting['scope.userInfo']) {
-            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-            wx.getUserInfo({
-              success: async function(res) {
-                console.log('获取用户信息成功', res)
-                that.userInfo = res.userInfo
-                wx.setStorageSync('userInfo', JSON.stringify(res.userInfo))
-                await that.$api.addUser({
-                  ...res.userInfo,
-                  openid: getApp().globalData.openid
-                })
-              }
-            })
-          }else{
-            console.log('获取用户信息失败')
-          }
-        }
-      })
-    }
-    
   },
   methods: {
-    bindGetUserInfo: function(e) {
-      // console.log(e.detail.userInfo, 111)
+    logOut () {
+      wx.setStorageSync('userInfo', null)
+      wx.setStorageSync('openid', null)
+      this.userInfo = null
+      uni.showToast({
+        icon: 'success',
+        title: '登出成功'
+      })
+    },
+    logIn () {
+      let userInfo = wx.getStorageSync('userInfo')
+      if (userInfo) {
+        this.userInfo = JSON.parse(userInfo)
+      } else {
+        this.loading = true
+        let that = this;
+        uni.login({
+          provider: 'weixin',
+          success: function (loginRes) {
+            // 获取用户信息
+            uni.getUserInfo({
+              provider: 'weixin',
+              success: async (infoRes) => {
+                console.log('用户信息', infoRes.userInfo)
+                that.userInfo = infoRes.userInfo
+                wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
+                await that.$api.addUser({
+                  ...infoRes.userInfo,
+                  openid: getApp().globalData.openid
+                })
+                uni.showToast({
+                  icon: 'success',
+                  title: '登录成功'
+                })
+              },
+              fail () {
+                uni.showToast({
+                  icon: 'none',
+                  title: '用户未授权'
+                })
+              },
+              complete () {
+                that.loading = false
+              }
+            })
+          }
+        })
+      }
     }
   }
 }
@@ -62,11 +83,24 @@ export default {
   background: url('/static/images/mine_background.png') 100% 100%;
   height: 340rpx;
   box-sizing: border-box;
-  padding: 50rpx 0;
+  padding: 60rpx 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   font-size: 32rpx;
+  position: relative;
+}
+.user-info-container__log-out-btn {
+  position: absolute;
+  bottom: 40rpx;
+  right: 40rpx;
+  color: white;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  padding: 6rpx;
+  border: 1px solid white;
+  border-radius: 6rpx;
 }
 </style>
