@@ -21,60 +21,41 @@
       </view>
     </view>
     <!-- 分数 -->
-    <view class="detail-score">
-      <view style="font-size: 20rpx;">豆瓣评分</view>
-      <view>
-        <h3 style="font-size: 50rpx;">{{item.score}}</h3>
-        <uni-rate allow-half :size="8" :value="item.score / 2" style="position: relative;left: -10rpx;"/>
-      </view>
-    </view>
+    <DetailScore :score="item.score"></DetailScore>
     <!-- 简介 -->
     <view style="width: 95%;margin: 60rpx auto;">
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">简介</view>
       <view style="font-size: 22rpx;line-height: 40rpx;">{{item.introduction || '暂无'}}</view>
     </view>
     <!-- 短评 -->
-    <view class="brief-comments-container">
+    <view class="brief-comments-container" v-if="comments.length">
       <!-- 标题 -->
       <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
-        <span style="font-size: 30rpx;font-weight: bold;">短评</span>
-        <span style="font-size: 20rpx;">全部 {{comments.length}}
+        <span style="font-size: 26rpx;font-weight: bold;">短评</span>
+        <span style="font-size: 20rpx;" @click="goToAllComments">全部 {{comments.length}}
           <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
         </span>
       </view>
       <!-- 评论 -->
-      <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;" v-for="comment in comments" :key="comment._id">
-        <view class="comment-user-info">
-          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl"></image>
-          <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
-          <view style="grid-area: c;display: flex;align-items: center;">
-            <uni-rate v-if="comment.score" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
-            <span style="font-size: 18rpx;color: #999;">{{formatCommentTime(comment.commentTime)}}</span>
-          </view>
-        </view>
-        <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{comment.comment}}</view>
-        <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
-          <image @click="likeOrUnlikeComment(comment._id)" v-if="!comment.liked" src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
-          <image @click="likeOrUnlikeComment(comment._id)" v-if="comment.liked" src="/static/images/good-on.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
-          {{comment.commentLikedNum}}
-        </view>
-      </view>
+      <BriefComment :comment="comment" @getComments="getComments" v-for="comment in comments" :key="comment._id"></BriefComment>
       <!-- 查看全部 -->
-      <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;">
+      <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
         <view style="font-weight: bold;">查看全部短评</view>
         <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;"></image>
       </view>
     </view>
+    <view v-else class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>
   </view>
 </template>
 
 <script>
-import { uniRate } from '@dcloudio/uni-ui'
-import dayjs from 'dayjs'
+import DetailScore from '@/components/detail/DetailScore.vue'
+import BriefComment from '@/components/detail/BriefComment.vue'
 
 export default {
   components: {
-    uniRate
+    DetailScore,
+    BriefComment
   },
   data () {
     return {
@@ -110,18 +91,10 @@ export default {
     }
   },
   methods: {
-    formatCommentTime (time) {
-      if (time.substring(0, 4) === dayjs().format('YYYY')) {
-        return time.substring(5, 11)
-      }
-      return time.substring(0, 11)
-    },
-    async likeOrUnlikeComment(_id) {
-      await this.$api.likeOrUnlikeComment({
-        recordId: _id,
-        openid: getApp().globalData.openid
+    goToAllComments () {
+      uni.navigateTo({
+        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}`
       })
-      await this.getComments()
     },
     async getComments () {
       const res = await this.$api.getComments({
@@ -221,16 +194,6 @@ export default {
     }
   }
 }
-.detail-score {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-  background: white;
-  border-radius: 10rpx;
-  width: 95%;
-  height: 150rpx;
-  margin: 20rpx auto;
-}
 .brief-comments-container {
   font-size: 22rpx;
   width: 95%;
@@ -240,15 +203,5 @@ export default {
   box-sizing: border-box;
   padding: 20rpx;
   padding-bottom: 0;
-}
-.comment-user-info {
-  margin-top: 20rpx;
-  height: 50rpx;
-  display: grid;
-  grid-template-areas: 'a b'
-                       'a c';
-  grid-template-columns: 50rpx 1fr;
-  grid-template-rows: 1.5fr 1fr;
-  gap: 5rpx 10rpx;
 }
 </style>

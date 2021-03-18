@@ -60,6 +60,14 @@
         "navigationBarBackgroundColor": "#F3F7F6",
         "navigationBarTextStyle": "black"
 			}
+		},
+    {
+			"path": "pages/AllComments",
+			"style": {
+				"navigationBarTitleText": "短评",
+        "navigationBarBackgroundColor": "#F3F7F6",
+        "navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {
