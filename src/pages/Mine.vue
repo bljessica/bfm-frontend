@@ -34,45 +34,46 @@ export default {
         title: '登出成功'
       })
     },
-    logIn () {
+    onLoad () {
       let userInfo = wx.getStorageSync('userInfo')
       if (userInfo) {
         this.userInfo = JSON.parse(userInfo)
-      } else {
-        this.loading = true
-        let that = this;
-        uni.login({
-          provider: 'weixin',
-          success: function (loginRes) {
-            // 获取用户信息
-            uni.getUserInfo({
-              provider: 'weixin',
-              success: async (infoRes) => {
-                console.log('用户信息', infoRes.userInfo)
-                that.userInfo = infoRes.userInfo
-                wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
-                await that.$api.addUser({
-                  ...infoRes.userInfo,
-                  openid: getApp().globalData.openid
-                })
-                uni.showToast({
-                  icon: 'success',
-                  title: '登录成功'
-                })
-              },
-              fail () {
-                uni.showToast({
-                  icon: 'none',
-                  title: '用户未授权'
-                })
-              },
-              complete () {
-                that.loading = false
-              }
-            })
-          }
-        })
-      }
+      } 
+    },
+    logIn () {
+      this.loading = true
+      let that = this;
+      uni.login({
+        provider: 'weixin',
+        success: function (loginRes) {
+          // 获取用户信息
+          uni.getUserInfo({
+            provider: 'weixin',
+            success: async (infoRes) => {
+              console.log('用户信息', infoRes.userInfo)
+              that.userInfo = infoRes.userInfo
+              wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
+              await that.$api.addUser({
+                ...infoRes.userInfo,
+                openid: getApp().globalData.openid
+              })
+              uni.showToast({
+                icon: 'success',
+                title: '登录成功'
+              })
+            },
+            fail () {
+              uni.showToast({
+                icon: 'none',
+                title: '用户未授权'
+              })
+            },
+            complete () {
+              that.loading = false
+            }
+          })
+        }
+      })
     }
   }
 }
