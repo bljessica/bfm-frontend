@@ -45,7 +45,7 @@
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
-      <uni-load-more v-if="loading" status="loading"></uni-load-more>
+      <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
       <!-- 查看全部 -->
       <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
         <view style="font-weight: bold;">查看全部短评</view>

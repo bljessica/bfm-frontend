@@ -4,7 +4,7 @@
       <CommonCard kind="music" v-for="music in musics" :key="music._id" :item="music" style="margin: auto;"></CommonCard>
     </view>
     <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
-    <uni-load-more v-if="loading" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 

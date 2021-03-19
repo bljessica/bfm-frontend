@@ -1,12 +1,15 @@
 <template>
 	<view class="books-container" style="background: #FEFEFE;">
-    <view class="books-search-bar" style="background-color: #42BD56;width: 100%;height: 70rpx;">
-      <input type="text" placeholder="搜索" style="border-radius: 10rpx;text-indent: 10rpx;font-size: 10px;width: 90%;background-color: white;margin: auto;">
+    <view class="books-search-bar-container" style="background-color: #42BD56;width: 100%;height: 70rpx;" >
+      <view class="books-search-bar" @click="goToSearch">
+        <image src="/static/images/search.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
+        <span>搜索</span>
+      </view>
     </view>
     <view class="book-sections-container" style="width: 90%;margin: 20rpx auto 0;">
       <BookSection v-for="item in bookSectionTitles" :key="item" :books="books[item]" :title="item"></BookSection>
     </view>
-    <uni-load-more v-if="loading" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
 	</view>
 </template>
 
@@ -31,10 +34,28 @@ export default {
       this.$set(this.books, title, res.data.data)
     })
     this.loading = false
+  },
+  methods: {
+    goToSearch () {
+      uni.navigateTo({
+        url: 'Search'
+      })
+    }
   }
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.books-search-bar {
+  border-radius: 10rpx;
+  font-size: 20rpx;
+  width: 90%;
+  background-color: white;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #999;
+  padding: 10rpx 0;
+}
 </style>

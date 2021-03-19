@@ -86,3 +86,12 @@ export const likeOrUnlikeComment = (data) => {
     method: 'PUT'
   })
 }
+
+// search
+export const search = (data) => {
+  return request({
+    url: '/search',
+    data,
+    method: 'POST'
+  })
+}

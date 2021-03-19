@@ -12,7 +12,7 @@
       </view>
     </view>
     <button @click="logIn" v-if="!userInfo">授权登录</button>
-    <uni-load-more v-if="loading" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
+    <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的书影音 -->
     <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;">
       <view class="my-bfm-container__title" style="height: 70rpx;display: flex;align-items: center;justify-content: space-between;">

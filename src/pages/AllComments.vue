@@ -24,7 +24,7 @@
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
-      <uni-load-more v-if="loading" status="loading"></uni-load-more>
+      <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
     </view>
   </view>
 </template>

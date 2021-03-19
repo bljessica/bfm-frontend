@@ -20,13 +20,13 @@
 			}
 		},
     {
-			"path": "pages/Film",
+			"path": "pages/Films",
 			"style": {
 				"navigationBarTitleText": "书影音社区"
 			}
 		},
     {
-			"path": "pages/Music",
+			"path": "pages/Musics",
 			"style": {
 				"navigationBarTitleText": "书影音社区"
 			}
@@ -68,6 +68,12 @@
         "navigationBarBackgroundColor": "#F3F7F6",
         "navigationBarTextStyle": "black"
 			}
+		},
+    {
+			"path": "pages/Search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
 		}
 	],
 	"globalStyle": {
@@ -87,13 +93,13 @@
       "text": "书籍"
       },
       {
-        "pagePath": "pages/Film",
+        "pagePath": "pages/Films",
         "iconPath": "static/images/film.png",
         "selectedIconPath": "static/images/film_on.png",
         "text": "影视"
       },
       {
-        "pagePath": "pages/Music",
+        "pagePath": "pages/Musics",
         "iconPath": "static/images/music.png",
         "selectedIconPath": "static/images/music_on.png",
         "text": "音乐"
