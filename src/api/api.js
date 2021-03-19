@@ -62,6 +62,22 @@ export const getItemComments = (data) => {
   })
 }
 
+export const getUserAnalysis = (data) => {
+  return request({
+    url: '/userAnalysis',
+    data,
+    method: 'GET'
+  })
+}
+
+export const getFilmTagAnalysis = (data) => {
+  return request({
+    url: '/filmTagAnalysis',
+    data,
+    method: 'GET'
+  })
+}
+
 // likeComment
 export const likeOrUnlikeComment = (data) => {
   return request({
