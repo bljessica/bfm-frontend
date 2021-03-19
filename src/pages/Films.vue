@@ -4,7 +4,7 @@
       <CommonCard kind="film" v-for="film in films" style="margin: auto;" :key="film._id" :item="film"></CommonCard>
     </view>
     <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
-    <uni-load-more v-if="loading" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 
