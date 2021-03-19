@@ -44,7 +44,7 @@
         </span>
       </view>
       <!-- 评论 -->
-      <BriefComment :comment="comment" @getComments="getComments" v-for="comment in comments" :key="comment._id"></BriefComment>
+      <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
       <uni-load-more v-if="loading" status="loading"></uni-load-more>
       <!-- 查看全部 -->
       <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
@@ -82,7 +82,7 @@ export default {
   },
   async onShow () {
     await this.getDetail()
-    await this.getComments()
+    await this.getItemComments()
   },
   computed: {
     briefIntroduction() {
@@ -102,17 +102,26 @@ export default {
   methods: {
     goToAllComments () {
       uni.navigateTo({
-        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}`
+        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&commentsType=${this.commentsType}`
       })
     },
-    async getComments () {
+    async getItemComments () {
       this.loading = true
-      const res = await this.$api.getComments({
+      let res = await this.$api.getItemComments({
         status: this.commentsType,
         kind: this.kind,
         name: this.item.name,
         openid: getApp().globalData.openid
       })
+      if (!res.data.data.length) {
+        this.commentsType = 'after'
+        res = await this.$api.getItemComments({
+          status: this.commentsType,
+          kind: this.kind,
+          name: this.item.name,
+          openid: getApp().globalData.openid
+        })
+      }
       this.comments = res.data.data
       this.loading = false
     },

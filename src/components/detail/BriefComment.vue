@@ -1,7 +1,7 @@
 <template>
   <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;">
         <view class="comment-user-info">
-          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl"></image>
+          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl || '/static/images/default_avatar.png'"></image>
           <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
           <view style="grid-area: c;display: flex;align-items: center;">
             <uni-rate v-if="comment.score" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
@@ -41,7 +41,7 @@ export default {
         recordId: _id,
         openid: getApp().globalData.openid
       })
-      this.$emit('getComments')
+      this.$emit('getItemComments')
     }
   }
 }

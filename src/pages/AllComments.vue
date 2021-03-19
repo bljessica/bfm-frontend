@@ -23,7 +23,7 @@
         </view>
       </view>
       <!-- 评论 -->
-      <BriefComment :comment="comment" @getComments="getComments" v-for="comment in comments" :key="comment._id"></BriefComment>
+      <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
       <uni-load-more v-if="loading" status="loading"></uni-load-more>
     </view>
   </view>
@@ -43,7 +43,7 @@ export default {
       kind: null,
       name: null,
       score: null,
-      commentsType: 'want',
+      commentsType: null,
       comments: [],
       showCommentTypeOptions: false,
       loading: false
@@ -53,14 +53,15 @@ export default {
     this.kind = options.kind
     this.name = options.name
     this.score = options.score
+    this.commentsType = options.commentsType
   },
   async onShow () {
-    await this.getComments()
+    await this.getItemComments()
   },
   watch: {
     commentsType: {
       async handler () {
-        await this.getComments()
+        await this.getItemComments()
       },
       immediate: true
     }
@@ -70,9 +71,9 @@ export default {
       this.commentsType = type
       this.showCommentTypeOptions = false
     },
-    async getComments () {
+    async getItemComments () {
       this.loading = true
-      const res = await this.$api.getComments({
+      const res = await this.$api.getItemComments({
         status: this.commentsType,
         kind: this.kind,
         name: this.name,

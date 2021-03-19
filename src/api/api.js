@@ -54,9 +54,9 @@ export const addRecord = (data) => {
   })
 }
 
-export const getComments = (data) => {
+export const getItemComments = (data) => {
   return request({
-    url: '/getComments',
+    url: '/itemComments',
     data,
     method: 'GET'
   })
