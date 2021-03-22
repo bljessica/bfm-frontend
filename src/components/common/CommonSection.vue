@@ -1,8 +1,8 @@
 <template>
   <view style="margin-bottom: 40rpx;">
     <view class="common-section-title" style="font-size: 24rpx;display: flex;justify-content: space-between;align-items: center;">
-      <view style="font-weight: bold;">{{ sectionTitle + (kind === 'book' ? '' : '  ' + count)}}</view>
-      <view style="color: #42BD56;" v-if="kind === 'book'" @click="goToBookType">
+      <view style="font-weight: bold;">{{ sectionTitle + (showNum ? '  ' + count : '')}}</view>
+      <view style="color: #42BD56;" v-if="seekMore" @click="goToBookType">
         查看更多
         <image src="/static/images/green-right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;"></image>
       </view>
@@ -25,6 +25,14 @@ export default {
     CommonCard
   },
   props: {
+    seekMore: {
+      type: Boolean,
+      default: false
+    },
+    showNum: {
+      type: Boolean,
+      default: true
+    },
     kind: {
       type: String,
       default: ''
