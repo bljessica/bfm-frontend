@@ -17,8 +17,8 @@
     <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;">
       <view class="my-bfm-container__title" style="height: 70rpx;display: flex;align-items: center;justify-content: space-between;">
         <span style="font-size: 28rpx;">我的书影音</span>
-        <span style="font-size: 24rpx;display: flex;align-items: center;color: #999;">
-          <span>全部</span>
+        <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
+          <span @click="goToMyBFM">全部</span>
           <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;margin-left: 8rpx;"></image>
         </span>
       </view>
@@ -86,9 +86,12 @@ export default {
       const total = Object.values(this.filmTags).reduce((acc, cur) => {
         return acc + cur
       }, 0)
+      if (total === 0) {
+        return '暂无观影分析'
+      }
       let tags = []
       Object.keys(this.filmTags).forEach(item => {
-        tags.push([item, (this.filmTags[item] / total).toFixed(3)])
+        tags.push([item, (this.filmTags[item] / total * 100).toFixed(1)])
       })
       tags.sort((a, b) => {
         return b[1] - a[1]
@@ -100,17 +103,19 @@ export default {
         tags[2][0] = '<br />' + tags[2][0]
       }
       return tags.reduce((acc, cur) => {
-        return acc + cur[0] + ' ' + cur[1] * 100 + '%  '
+        return acc + cur[0] + ' ' + cur[1] + '%  '
       }, '')
     }
   },
   methods: {
+    goToMyBFM () {
+      uni.navigateTo({url: 'MyBFM'})
+    },
     async getFilmTagAnalysis () {
       const res = await this.$api.getFilmTagAnalysis({
         openid: getApp().globalData.openid,
         status: 'after'
       })
-      console.log(res.data.data)
       this.filmTags = res.data.data
     },
     getAnalysisByKindAndStatus (kind, status) {

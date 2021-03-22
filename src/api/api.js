@@ -70,6 +70,14 @@ export const getUserAnalysis = (data) => {
   })
 }
 
+export const getUserAnalysisDetail = (data) => {
+  return request({
+    url: '/userAnalysisDetail',
+    data,
+    method: 'GET'
+  })
+}
+
 export const getFilmTagAnalysis = (data) => {
   return request({
     url: '/filmTagAnalysis',

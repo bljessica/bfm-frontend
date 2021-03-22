@@ -8,15 +8,15 @@
       <view class="detail-title__buttons" style="grid-area: d / d / e / e;display: flex;justify-content: space-between;">
         <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'want'}" @click="addRecord('want')">
           <image v-if="status !== 'want'" src="/static/images/want-read.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
-          <view>{{status === 'want' ? '已' : ''}}想{{kind === 'music' ? '听' : '看'}}</view>
+          <view>{{status === 'want' ? '已' : ''}}想{{KIND_STATUS_NAME[kind]}}</view>
         </view>
         <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'doing'}" @click="addRecord('doing')">
           <image v-if="status !== 'doing'" src="/static/images/reading.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
-          <view>{{status === 'doing' ? '已' : ''}}在{{kind === 'music' ? '听' : '看'}}</view>
+          <view>{{status === 'doing' ? '已' : ''}}在{{KIND_STATUS_NAME[kind]}}</view>
         </view>
         <view class="detail-title__button detail-title__button-after" :class="{'detail-title__button--on-status': status === 'after'}" @click="addRecord(status === 'after' ? 'none' : 'after')">
           <image v-if="status !== 'after'" src="/static/images/have-read.png" style="width: 35rpx;height: 35rpx;margin-right: 4rpx;position: relative;top: -2rpx;"></image>
-          <view>{{status === 'after' ? '已' : ''}}{{kind === 'music' ? '听' : '看'}}过</view>
+          <view>{{status === 'after' ? '已' : ''}}{{KIND_STATUS_NAME[kind]}}过</view>
         </view>
       </view>
     </view>
@@ -59,6 +59,7 @@
 <script>
 import DetailScore from '@/components/detail/DetailScore.vue'
 import BriefComment from '@/components/detail/BriefComment.vue'
+import { KIND_STATUS_NAME } from '@/constants/constants'
 
 export default {
   components: {
@@ -73,7 +74,8 @@ export default {
       _id: null,
       commentsType: 'want',
       comments: [],
-      loading: false
+      loading: false,
+      KIND_STATUS_NAME
     }
   },
   async onLoad (options) {

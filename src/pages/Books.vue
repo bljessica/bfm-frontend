@@ -4,6 +4,7 @@
       <CommonCard kind="book" v-for="book in books" :key="book._id" :item="book" style="margin: auto;"></CommonCard>
     </view>
     <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
+    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 
@@ -22,7 +23,8 @@ export default {
         pageSize: 12,
       },
       totalPage: 0,
-      type: ''
+      type: '',
+      loading: false
     }
   },
   watch: {
@@ -47,12 +49,14 @@ export default {
       }
     },
     async getBooks () {
+      this.loading = true
       const res = await this.$api.getAllBooksByType({
           ...this.pagination,
           type: this.type
         })
         this.books = res.data.data
         this.totalPage = res.data.total
+        this.loading = false
     }
   }
 }

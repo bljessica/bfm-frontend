@@ -7,18 +7,18 @@
       </view>
     </view>
     <view class="book-sections-container" style="width: 90%;margin: 20rpx auto 0;">
-      <BookSection v-for="item in bookSectionTitles" :key="item" :books="books[item]" :title="item"></BookSection>
+      <CommonSection v-for="item in bookSectionTitles" :key="item" :items="books[item]" kind="book" :sectionTitle="item"></CommonSection>
     </view>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
 	</view>
 </template>
 
 <script>
-import BookSection from '@/components/book/BookSection'
+import CommonSection from '@/components/common/CommonSection'
 
 export default {
   components: {
-    BookSection
+    CommonSection
   },
   data() {
     return {

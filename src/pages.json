@@ -74,6 +74,12 @@
 			"style": {
 				"navigationBarTitleText": "搜索"
 			}
+		},
+    {
+			"path": "pages/MyBFM",
+			"style": {
+				"navigationBarTitleText": "我的书影音"
+			}
 		}
 	],
 	"globalStyle": {
