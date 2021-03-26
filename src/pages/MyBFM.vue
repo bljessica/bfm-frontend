@@ -9,6 +9,7 @@
         :sectionTitle="KIND_STATUS[kind + '-' + status]"
         :count="data[kind][status].length"
         :kind="kind"
+        :status="status"
       />
     </view>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>

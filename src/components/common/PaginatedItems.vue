@@ -3,7 +3,7 @@
     <view class="paginated-cards-container" style="background: #FEFEFE;margin-bottom: 20rpx;">
       <CommonCard :kind="kind" v-for="item in items" style="margin: auto;" :key="item._id" :item="item"></CommonCard>
     </view>
-    <uni-pagination @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
+    <uni-pagination v-if="pagination" @change="pageChange" :pageSize="pagination.pageSize" show-icon="true" :total="totalPage" :current="pagination.pageIdx"></uni-pagination>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
@@ -16,6 +16,9 @@ export default {
     kind: {
       type: String,
       required: true
+    },
+    status: {
+      type: String
     },
     bookType: { // 书类型
       type: String
@@ -50,32 +53,55 @@ export default {
   watch: {
     pagination: {
       async handler (val) {
-        this.loading = true
-        let res = null
-        if (this.kind === 'book') {
-          res = await this.getItemsFunc({
-            ...val,
-            type: this.bookType  
-          })
-        } else {
-          res = await this.getItemsFunc(val)
+        if (val) {
+          this.loading = true
+          let res = null
+          if (this.kind === 'book') {
+            res = await this.getItemsFunc({
+              ...val,
+              type: this.bookType  
+            })
+          } else {
+            res = await this.getItemsFunc(val)
+          }
+          if (res) {
+            this.items = res.data.data
+            this.totalPage = res.data.total
+            this.loading = false
+          }
         }
-        this.items = res.data.data
-        this.totalPage = res.data.total
-        this.loading = false
       },
       deep: true,
       immediate: true
     },
+    status: {
+      async handler (val) {
+        if (val) {
+          this.pagination = null
+          this.loading = true
+          const res = await this.$api.getUserAnalysisSectionItems({
+            openid: getApp().globalData.openid,
+            kind: this.kind,
+            status: val
+          })
+          this.items = res.data.data
+          this.loading = false
+        }
+      },
+      immediate: true
+    },
     bookType: {
-      async handler () {
-        const res = await this.getItemsFunc({
-          ...this.pagination,
-          type: this.bookType  
-        })
-        this.items = res.data.data
-        this.totalPage = res.data.total
-        this.loading = false
+      async handler (val) {
+        if (val) {
+          this.loading = true
+          const res = await this.getItemsFunc({
+            ...this.pagination,
+            type: val 
+          })
+          this.items = res.data.data
+          this.totalPage = res.data.total
+          this.loading = false
+        }
       },
       immediate: true
     }

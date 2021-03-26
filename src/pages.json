@@ -80,6 +80,12 @@
 			"style": {
 				"navigationBarTitleText": "我的书影音"
 			}
+		},
+    {
+			"path": "pages/MyBFMStatus",
+			"style": {
+				"navigationBarTitleText": "我的书影音"
+			}
 		}
 	],
 	"globalStyle": {
