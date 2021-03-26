@@ -116,7 +116,7 @@ export default {
         openid: getApp().globalData.openid
       })
       if (!res.data.data.length) {
-        this.commentsType = 'after'
+        this.commentsType = this.commentsType === 'after' ? 'want' : 'after'
         res = await this.$api.getItemComments({
           status: this.commentsType,
           kind: this.kind,
