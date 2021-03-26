@@ -1,6 +1,7 @@
 <template>
   <view>
     <view class="user-info-container">
+      <image src="/static/images/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;z-index: -1;"></image>
       <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;"></image>
       <view class="user-info-container__name" style="font-size: 34rpx;color: white;">
         {{(userInfo && userInfo.nickName) ? userInfo.nickName : '未登录'}}
@@ -197,7 +198,6 @@ export default {
 
 <style lang="scss" scoped>
 .user-info-container {
-  background: url('/static/images/mine_background.png') 100% 100%;
   height: 340rpx;
   box-sizing: border-box;
   padding: 60rpx 0;

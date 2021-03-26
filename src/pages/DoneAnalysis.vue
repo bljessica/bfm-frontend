@@ -9,9 +9,28 @@
         {{KIND_UNITS[kind] + KIND_NAMES[kind]}}
       </span>
     </view>
+    <!-- 展示 -->
+    <view class="recent-items-display" style="position: absolute;top: 130rpx;left: 10rpx;right: 10rpx;height: 120rpx;margin-top: 30rpx;">
+      <view class="recent-items-display__img-wrapper" 
+        v-for="i in 9" 
+        :key="i" 
+        :style="{
+          left: i > 4 ? 'unset' : 10 * (i + 1) + '%',
+          right: i > 4 ? 10 * (9 - i) + '%' : 'unset',
+          width: 120 * (1 - 0.08 * Math.abs(4 - i)) + 'rpx',
+          height: 150 * (1 - 0.08 * Math.abs(4 - i)) + 'rpx',
+          transform: i > 4 ? 'translateX(50%)' : 'translateX(-50%)',
+          backgroundColor: analysisData.recentDoneItems[i] ? 'unset' : '#E3E3E3',
+          zIndex: 10 - Math.abs(4 - i)
+        }"
+      >
+        <image class="recent-items-display__img-wrapper__img" v-if="analysisData.recentDoneItems[i]" :src="analysisData.recentDoneItems[i].coverSrc"></image>
+        <image v-else :src="`/static/images/analysis_${kind}.png`" style="width: 30rpx;height: 30rpx;z-index: inherit;" />
+      </view>
+    </view>
     <!-- 最常看的类型 -->
     <view class="type-info-container" style="font-weight: bold;">
-      <view class="analysis-item-title">最常{{KIND_STATUS_NAME[kind]}}的类型</view>
+      <view class="analysis-item-title" style="margin-top: 230rpx;">最常{{KIND_STATUS_NAME[kind]}}的类型</view>
       <view v-for="item in sortedTypeTags" :key="item[0]" class="type-container" style="position: relative;margin-bottom: 4rpx;font-size: 20rpx;overflow: hidden;">
         <view class="type-container__type-container">
           <image :src="FILM_TYPES[item[0]].imgUrl" style="width: 34rpx;height: 34rpx;border-radius: 50%;margin-right: 10rpx;"></image>
@@ -264,5 +283,20 @@ export default {
 .country-arcbar-chart {
   width: 80px;
   height: 80px;
+}
+.recent-items-display__img-wrapper {
+  position: absolute; 
+  bottom: 0;   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+.recent-items-display__img-wrapper__img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: inherit;
 }
 </style>
