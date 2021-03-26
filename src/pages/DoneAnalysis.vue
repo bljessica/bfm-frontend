@@ -1,8 +1,8 @@
 <template>
-  <view class="done-analysis-container" v-if="analysisData.total">
-    <view class="user-info-container">
-      <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 80rpx;height: 80rpx;border-radius: 50%;grid-area: a;"></image>
-      <span style="grid-area: b;font-size: 28rpx;font-weight: bold;">{{userInfo && userInfo.nickName}}</span>
+  <view class="done-analysis-container">
+    <view class="user-info-container" v-if="userInfo && analysisData.total">
+      <image :src="userInfo.avatarUrl || '/static/images/default_avatar.png'" style="width: 80rpx;height: 80rpx;border-radius: 50%;grid-area: a;"></image>
+      <span style="grid-area: b;font-size: 28rpx;font-weight: bold;">{{userInfo.nickName}}</span>
       <span style="grid-area: c;font-size: 20rpx;color: #999;">在豆瓣一共标记{{KIND_STATUS_NAME[kind]}}过</span>
       <span style="grid-area: d;font-weight: bold;font-size: 20rpx;text-align: center;">
         <span style="font-size: 40rpx;">{{analysisData.total}}</span><br />
@@ -10,7 +10,7 @@
       </span>
     </view>
     <!-- 展示 -->
-    <view class="recent-items-display" style="position: absolute;top: 130rpx;left: 10rpx;right: 10rpx;height: 120rpx;margin-top: 30rpx;">
+    <view class="recent-items-display" v-if="analysisData.recentDoneItems" style="position: absolute;top: 130rpx;left: 10rpx;right: 10rpx;height: 120rpx;margin-top: 30rpx;">
       <view class="recent-items-display__img-wrapper" 
         v-for="i in 9" 
         :key="i" 
@@ -29,7 +29,7 @@
       </view>
     </view>
     <!-- 最常看的类型 -->
-    <view class="type-info-container" style="font-weight: bold;">
+    <view class="type-info-container" v-if="sortedTypeTags.length" style="font-weight: bold;">
       <view class="analysis-item-title" style="margin-top: 230rpx;">最常{{KIND_STATUS_NAME[kind]}}的类型</view>
       <view v-for="item in sortedTypeTags" :key="item[0]" class="type-container" style="position: relative;margin-bottom: 4rpx;font-size: 20rpx;overflow: hidden;">
         <view class="type-container__type-container">
@@ -43,21 +43,23 @@
       </view>
     </view>
     <!-- 年份分布 -->
-    <view class="publish-year-info-container">
+    <view class="publish-year-info-container" v-if="yearDataSeries.length">
       <view class="analysis-item-title" style="margin-bottom: 0;">{{KIND_NAMES[kind]}}年份分布</view>
       <view class="year-pie-chart">
 		    <canvas canvas-id="canvasPie" id="canvasPie" class="year-pie-chart"></canvas>
       </view>
     </view>
     <!-- 地区分布 -->
-    <view class="country-info-container" v-if="analysisData.itemInfos.country">
+    <view class="country-info-container" v-if="countryDataSeries.length">
       <view class="analysis-item-title">{{KIND_NAMES[kind]}}地区分布</view>
       <view class="country-arcbar-chart-wrapper">
 			  <canvas v-for="i in 6" :key="i" :canvas-id="'canvasArcbar' + i" :id="'canvasArcbar' + i" class="country-arcbar-chart"></canvas>
       </view>
     </view>
+    <!-- 暂无分析 -->
+    <view v-if="!analysisData.total && !loading" style="font-size: 26rpx;font-weight: bold;text-align: center;margin-top: 20rpx;">暂无观影分析</view>
+    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
-  <view v-else style="font-size: 26rpx;font-weight: bold;text-align: center;margin-top: 20rpx;">暂无观影分析</view>
 </template>
 
 <script>
@@ -82,8 +84,7 @@ export default {
       KIND_UNITS,
       analysisData: {},
       FILM_TYPES,
-      cWidth: '',
-      cHeight: ''
+      loading: false
     }
   },
   computed: {
@@ -139,11 +140,13 @@ export default {
     this.userInfo = JSON.parse(wx.getStorageSync('userInfo'))
   },
   async onShow () {
+    this.loading = true
     const res = await this.$api.getDoneItemsAnalysis({
       openid: getApp().globalData.openid,
       kind: this.kind
     })
     this.analysisData = res.data.data
+    this.loading = false
     this.showYearPie()
     for (let i in this.countryDataSeries) {
       this.showCountryArcbar('canvasArcbar' + i, [this.countryDataSeries[i]])
