@@ -18,6 +18,14 @@ export const getAllFilms = (data) => {
   })
 }
 
+export const getFilmTagAnalysis = (data) => {
+  return request({
+    url: '/filmTagAnalysis',
+    data,
+    method: 'GET'
+  })
+}
+
 // music
 export const getAllMusics = (data) => {
   return request({
@@ -86,9 +94,9 @@ export const getUserAnalysisSectionItems = (data) => {
   })
 }
 
-export const getFilmTagAnalysis = (data) => {
+export const getDoneItemsAnalysis = (data) => {
   return request({
-    url: '/filmTagAnalysis',
+    url: '/doneItemsAnalysis',
     data,
     method: 'GET'
   })

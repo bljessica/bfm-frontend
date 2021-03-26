@@ -23,7 +23,7 @@
         </span>
       </view>
       <!-- 观影分析 -->
-      <view class="kind-analysis-container">
+      <view class="kind-analysis-container" @click="goToDoneAnalysis('film')">
         <image src="/static/images/film-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">观影分析</view>
         <view class="done-num" style="color: #2284E7;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('film', 'after')}}</span>看过</view>
@@ -31,7 +31,7 @@
         <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
       <!-- 读书分析 -->
-      <view class="kind-analysis-container">
+      <view class="kind-analysis-container" @click="goToDoneAnalysis('book')">
         <image src="/static/images/book-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">读书分析</view>
         <view class="done-num" style="color: #40BD55;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('book', 'after')}}</span>读过</view>
@@ -41,7 +41,7 @@
         <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
       <!-- 音乐分析 -->
-      <view class="kind-analysis-container">
+      <view class="kind-analysis-container" @click="goToDoneAnalysis('music')">
         <image src="/static/images/music-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">音乐分析</view>
         <view class="done-num" style="color: #FF8C56;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('music', 'after')}}</span>听过</view>
@@ -108,6 +108,11 @@ export default {
     }
   },
   methods: {
+    goToDoneAnalysis (kind) {
+      uni.navigateTo({
+        url: 'DoneAnalysis?kind=' + kind
+      })
+    },
     goToMyBFM () {
       uni.navigateTo({url: 'MyBFM'})
     },

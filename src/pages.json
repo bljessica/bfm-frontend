@@ -86,6 +86,14 @@
 			"style": {
 				"navigationBarTitleText": "我的书影音"
 			}
+		},
+    {
+			"path": "pages/DoneAnalysis",
+			"style": {
+				"navigationBarTitleText": "观影分析",
+        "navigationBarBackgroundColor": "#F3F7F6",
+        "navigationBarTextStyle": "black"
+			}
 		}
 	],
 	"globalStyle": {

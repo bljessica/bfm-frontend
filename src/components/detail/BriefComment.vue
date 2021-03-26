@@ -1,20 +1,20 @@
 <template>
   <view class="brief-comments-container__content" style="padding-bottom: 20rpx;border-bottom: 1px solid #ddd;">
-        <view class="comment-user-info">
-          <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl || '/static/images/default_avatar.png'"></image>
-          <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
-          <view style="grid-area: c;display: flex;align-items: center;">
-            <uni-rate v-if="comment.score" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
-            <span style="font-size: 18rpx;color: #999;">{{formatedCommentTime}}</span>
-          </view>
-        </view>
-        <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{comment.comment}}</view>
-        <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
-          <image @click="likeOrUnlikeComment(comment._id)" v-if="!comment.liked" src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
-          <image @click="likeOrUnlikeComment(comment._id)" v-if="comment.liked" src="/static/images/good-on.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
-          {{comment.commentLikedNum}}
-        </view>
+    <view class="comment-user-info">
+      <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl || '/static/images/default_avatar.png'"></image>
+      <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
+      <view style="grid-area: c;display: flex;align-items: center;">
+        <uni-rate v-if="comment.score" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
+        <span style="font-size: 18rpx;color: #999;">{{formatedCommentTime}}</span>
       </view>
+    </view>
+    <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{comment.comment}}</view>
+    <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
+      <image @click="likeOrUnlikeComment(comment._id)" v-if="!comment.liked" src="/static/images/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
+      <image @click="likeOrUnlikeComment(comment._id)" v-if="comment.liked" src="/static/images/good-on.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
+      {{comment.commentLikedNum}}
+    </view>
+  </view>
 </template>
 
 <script>
