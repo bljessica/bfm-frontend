@@ -1,55 +1,55 @@
 <template>
   <view>
     <view class="user-info-container">
-      <image src="/static/images/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;z-index: -1;"></image>
+      <image src="/static/images/mine/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;z-index: -1;"></image>
       <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;"></image>
       <view class="user-info-container__name" style="font-size: 34rpx;color: white;">
         {{(userInfo && userInfo.nickName) ? userInfo.nickName : '未登录'}}
       </view>
       <!-- 登出按钮 -->
       <view class="user-info-container__log-out-btn" @click="logOut" v-if="userInfo">
-        <image src="/static/images/quit.png" style="width: 24rpx;height: 24rpx;margin-right: 6rpx;"></image>
+        <image src="/static/images/mine/quit.png" style="width: 24rpx;height: 24rpx;margin-right: 6rpx;"></image>
         <span>退出</span>
       </view>
     </view>
     <button @click="logIn" v-if="!userInfo">授权登录</button>
     <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的书影音 -->
-    <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;">
+    <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;" @click="goToMyBFM">
       <view class="my-bfm-container__title" style="height: 70rpx;display: flex;align-items: center;justify-content: space-between;">
         <span style="font-size: 28rpx;">我的书影音</span>
         <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
-          <span @click="goToMyBFM">全部</span>
-          <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;margin-left: 8rpx;"></image>
+          <span>全部</span>
+          <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;margin-left: 8rpx;"></image>
         </span>
       </view>
       <!-- 观影分析 -->
       <view class="kind-analysis-container" @click="goToDoneAnalysis('film')">
-        <image src="/static/images/film-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
+        <image src="/static/images/mine/film_analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">观影分析</view>
         <view class="done-num" style="color: #2284E7;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('film', 'after')}}</span>看过</view>
         <view class="type-analysis" v-html="filmTagAnalysis"></view>
-        <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;"></image>
+        <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
       <!-- 读书分析 -->
       <view class="kind-analysis-container" @click="goToDoneAnalysis('book')">
-        <image src="/static/images/book-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
+        <image src="/static/images/mine/book_analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">读书分析</view>
         <view class="done-num" style="color: #40BD55;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('book', 'after')}}</span>读过</view>
         <view class="marked-num">标记<span style="margin: 0 2rpx;">{{getAnalysisByKindAndStatus('book', 'all')}}</span>本书</view>
         <view class="start-analysis">开启读书分析</view>
         <view class="start-now">立即开始</view>
-        <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;"></image>
+        <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
       <!-- 音乐分析 -->
       <view class="kind-analysis-container" @click="goToDoneAnalysis('music')">
-        <image src="/static/images/music-analysis.png" style="width: 30rpx;height: 30rpx;"></image>
+        <image src="/static/images/mine/music_analysis.png" style="width: 30rpx;height: 30rpx;"></image>
         <view class="analysis-name">音乐分析</view>
         <view class="done-num" style="color: #FF8C56;"><span style="font-size: 30rpx;margin-right: 5rpx;">{{getAnalysisByKindAndStatus('music', 'after')}}</span>听过</view>
         <view class="marked-num">标记<span style="margin: 0 2rpx;">{{getAnalysisByKindAndStatus('music', 'all')}}</span>张唱片</view>
         <view class="start-analysis">开启音乐分析</view>
         <view class="start-now">立即开始</view>
-        <image src="/static/images/right-arrow.png" style="width: 26rpx;height: 26rpx;"></image>
+        <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
     </view>
   </view>

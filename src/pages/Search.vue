@@ -3,7 +3,7 @@
     <!-- 搜索栏 -->
     <view class="books-search-bar-container" style="background-color: #42BD56;width: 100%;height: 70rpx;" >
       <view class="books-search-bar">
-        <image src="/static/images/search.png" style="width: 24rpx;height: 24rpx;margin: 0 5rpx;"></image>
+        <image src="/static/images/search/search.png" style="width: 24rpx;height: 24rpx;margin: 0 5rpx;"></image>
         <input :focus="true" v-model="searchText" type="text" style="flex: 1" placeholder="搜索"/>
       </view>
     </view>

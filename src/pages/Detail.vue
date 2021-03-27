@@ -7,15 +7,15 @@
       <view class="detail-title__introduction">{{briefIntroduction}}</view>
       <view class="detail-title__buttons" style="grid-area: d / d / e / e;display: flex;justify-content: space-between;">
         <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'want'}" @click="addRecord('want')">
-          <image v-if="status !== 'want'" src="/static/images/want-read.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
+          <image v-if="status !== 'want'" src="/static/images/detail/want_read.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
           <view>{{status === 'want' ? '已' : ''}}想{{KIND_STATUS_NAME[kind]}}</view>
         </view>
         <view v-if="status !== 'after'" class="detail-title__button" :class="{'detail-title__button--on-status': status === 'doing'}" @click="addRecord('doing')">
-          <image v-if="status !== 'doing'" src="/static/images/reading.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
+          <image v-if="status !== 'doing'" src="/static/images/detail/reading.png" style="width: 28rpx;height: 28rpx;margin-right: 10rpx;"></image>
           <view>{{status === 'doing' ? '已' : ''}}在{{KIND_STATUS_NAME[kind]}}</view>
         </view>
         <view class="detail-title__button detail-title__button-after" :class="{'detail-title__button--on-status': status === 'after'}" @click="addRecord(status === 'after' ? 'none' : 'after')">
-          <image v-if="status !== 'after'" src="/static/images/have-read.png" style="width: 35rpx;height: 35rpx;margin-right: 4rpx;position: relative;top: -2rpx;"></image>
+          <image v-if="status !== 'after'" src="/static/images/detail/have_read.png" style="width: 35rpx;height: 35rpx;margin-right: 4rpx;position: relative;top: -2rpx;"></image>
           <view>{{status === 'after' ? '已' : ''}}{{KIND_STATUS_NAME[kind]}}过</view>
         </view>
       </view>
@@ -40,7 +40,7 @@
       <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="font-size: 26rpx;font-weight: bold;">短评</span>
         <span style="font-size: 20rpx;" @click="goToAllComments">全部 {{comments.length}}
-          <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
+          <image src="/static/images/right_arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
         </span>
       </view>
       <!-- 评论 -->
@@ -49,7 +49,7 @@
       <!-- 查看全部 -->
       <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
         <view style="font-weight: bold;">查看全部短评</view>
-        <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;"></image>
+        <image src="/static/images/right_arrow.png" style="width: 20rpx;height: 20rpx;"></image>
       </view>
     </view>
     <view v-if="!loading && !comments.length" class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>

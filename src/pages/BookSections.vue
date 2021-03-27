@@ -2,7 +2,7 @@
 	<view class="books-container" style="background: #FEFEFE;">
     <view class="books-search-bar-container" style="background-color: #42BD56;width: 100%;height: 70rpx;" >
       <view class="books-search-bar" @click="goToSearch">
-        <image src="/static/images/search.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
+        <image src="/static/images/search/search.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
         <span>搜索</span>
       </view>
     </view>

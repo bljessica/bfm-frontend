@@ -3,7 +3,7 @@
     <image :src="item.coverSrc || '/static/images/book.png'" style="width: 100rpx;height: 130rpx;"></image>
     <view class="search-result-item__info">
       <view style="font-size: 20rpx;display: flex;align-items: center;">
-        <image v-if="item.kind === 'film'" src="/static/images/play.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
+        <image v-if="item.kind === 'film'" src="/static/images/search/play.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
         <span>
           {{item.name}}
           <span style="color: #ccc;">{{item.kind === 'film' ? '（' + item.publishTime.substring(0, 4) + '）': ''}}</span>

@@ -25,7 +25,7 @@
         }"
       >
         <image class="recent-items-display__img-wrapper__img" v-if="analysisData.recentDoneItems[i]" :src="analysisData.recentDoneItems[i].coverSrc"></image>
-        <image v-else :src="`/static/images/analysis_${kind}.png`" style="width: 30rpx;height: 30rpx;z-index: inherit;" />
+        <image v-else :src="`/static/images/analysis/analysis_${kind}.png`" style="width: 30rpx;height: 30rpx;z-index: inherit;" />
       </view>
     </view>
     <!-- 最常看的类型 -->

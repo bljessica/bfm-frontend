@@ -12,7 +12,7 @@
         </span>
         <span style="font-size: 18rpx;color: #999;" @click.stop="showCommentTypeOptions = !showCommentTypeOptions">
           {{commentsType === 'want' ? '想看' : '看过'}}
-          <image src="/static/images/up-arrow.png" 
+          <image src="/static/images/up_arrow.png" 
             :style="{transform: showCommentTypeOptions ? 'rotate(0)' : 'rotate(180deg)'}"
             style="width: 18rpx;height: 18rpx;margin-left: 5rpx;position: relative;top: 2rpx;transition: all .2s;" />
         </span>

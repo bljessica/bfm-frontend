@@ -4,11 +4,11 @@
       <view style="font-weight: bold;">{{ sectionTitle + (showNum ? '  ' + count : '')}}</view>
       <view style="color: #42BD56;" v-if="seekMore" @click="goToBookType">
         查看更多
-        <image src="/static/images/green-right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;"></image>
+        <image src="/static/images/green_right_arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;"></image>
       </view>
       <view style="color: #7B7B7B;" v-else @click="goToMyBFMStatus">
         全部
-        <image src="/static/images/right-arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;"></image>
+        <image src="/static/images/right_arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;"></image>
       </view>
     </view>
     <view class="common-cards-container">
