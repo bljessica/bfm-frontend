@@ -37,9 +37,9 @@
     <!-- 短评 -->
     <view class="brief-comments-container" v-if="comments.length">
       <!-- 标题 -->
-      <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
+      <view class="brief-comments-container__title" @click="goToAllComments" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="font-size: 26rpx;font-weight: bold;">短评</span>
-        <span style="font-size: 20rpx;" @click="goToAllComments">全部 {{comments.length}}
+        <span style="font-size: 20rpx;">全部 {{comments.length}}
           <image src="/static/images/right_arrow.png" style="width: 20rpx;height: 20rpx;margin-left: 5rpx;position: relative;top: 2rpx;"></image>
         </span>
       </view>

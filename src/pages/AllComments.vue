@@ -8,7 +8,7 @@
       <view class="brief-comments-container__title" style="position: relative;display: flex;justify-content: space-between;align-items: center;">
         <span style="display: flex;align-items: center;font-weight: bold;">
           <span style="font-size: 26rpx;">短评</span> 
-          <span style="font-size: 18rpx;color: #666;">{{comments.length}}条</span>
+          <span style="font-size: 18rpx;color: #666;margin-left: 5rpx;">{{comments.length}}条</span>
         </span>
         <span style="font-size: 18rpx;color: #999;" @click.stop="showCommentTypeOptions = !showCommentTypeOptions">
           {{commentsType === 'want' ? '想看' : '看过'}}
@@ -24,6 +24,7 @@
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
+      <view v-if="!comments.length && !loading" style="font-size: 26rpx;font-weight: bold;text-align: center;">暂无短评</view>
       <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
     </view>
   </view>
