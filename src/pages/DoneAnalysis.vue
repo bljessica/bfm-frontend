@@ -33,7 +33,7 @@
       <view class="analysis-item-title" style="margin-top: 230rpx;">最常{{KIND_STATUS_NAME[kind]}}的类型</view>
       <view v-for="item in sortedTypeTags" :key="item[0]" class="type-container" style="position: relative;margin-bottom: 4rpx;font-size: 20rpx;overflow: hidden;">
         <view class="type-container__type-container">
-          <image :src="FILM_TYPES[item[0]].imgUrl" style="width: 34rpx;height: 34rpx;border-radius: 50%;margin-right: 10rpx;"></image>
+          <image :src="TYPE_ICONS_URL[kind][item[0]].imgUrl" style="width: 34rpx;height: 34rpx;border-radius: 50%;margin-right: 10rpx;"></image>
           <span>{{item[0]}}</span>
         </view>
         <view class="type-container__num-container">
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { KIND_STATUS_NAME, KIND_NAMES, KIND_UNITS, FILM_TYPES } from '@/constants/constants'
+import { KIND_STATUS_NAME, KIND_NAMES, KIND_UNITS, TYPE_ICONS_URL } from '@/constants/constants'
 import uCharts from '@/components/uCharts/u-charts.js'
 
 let canvaPie = null
@@ -83,7 +83,7 @@ export default {
       KIND_NAMES,
       KIND_UNITS,
       analysisData: {},
-      FILM_TYPES,
+      TYPE_ICONS_URL,
       loading: false
     }
   },
