@@ -12,7 +12,7 @@
         <span>退出</span>
       </view>
     </view>
-    <button @click="logIn" v-if="!userInfo">授权登录</button>
+    <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
     <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的书影音 -->
     <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;" @click="goToMyBFM">
@@ -145,6 +145,7 @@ export default {
     logOut () {
       wx.setStorageSync('userInfo', null)
       wx.setStorageSync('openid', null)
+      getApp().globalData.openid = null
       this.userInfo = null
       uni.showToast({
         icon: 'success',
@@ -209,6 +210,8 @@ export default {
                 ...infoRes.userInfo,
                 openid: getApp().globalData.openid
               })
+              await that.getUserAnalysis()
+              await that.getFilmTagAnalysis()
               uni.showToast({
                 icon: 'success',
                 title: '登录成功'

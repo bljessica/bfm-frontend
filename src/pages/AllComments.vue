@@ -1,7 +1,7 @@
 <template>
   <view class="all-comments-container" @click="showCommentTypeOptions = false" style="background: #F3F7F6;min-height: 100vh;overflow: hidden;">
     <!-- 分数 -->
-    <DetailScore :score="score"></DetailScore>
+    <DetailScore :score="score" :my-score="myScore"></DetailScore>
     <!-- 短评 -->
     <view class="brief-comments-container">
       <!-- 标题 -->
@@ -44,6 +44,7 @@ export default {
       kind: null,
       name: null,
       score: null,
+      myScore: null,
       commentsType: null,
       comments: [],
       showCommentTypeOptions: false,
@@ -54,6 +55,7 @@ export default {
     this.kind = options.kind
     this.name = options.name
     this.score = options.score
+    this.myScore = options.myScore
     this.commentsType = options.commentsType
   },
   async onShow () {

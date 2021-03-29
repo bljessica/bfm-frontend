@@ -21,7 +21,7 @@
       </view>
     </view>
     <!-- 分数 -->
-    <DetailScore :score="item.score"></DetailScore>
+    <DetailScore :score="item.score" :my-score="myScore"></DetailScore>
     <!-- 简介 -->
     <view style="width: 95%;margin: 60rpx auto;">
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">简介</view>
@@ -71,6 +71,7 @@ export default {
       item: null,
       kind: null,
       status: null,
+      myScore: null,
       _id: null,
       commentsType: 'want',
       comments: [],
@@ -104,7 +105,7 @@ export default {
   methods: {
     goToAllComments () {
       uni.navigateTo({
-        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&commentsType=${this.commentsType}`
+        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&myScore=${this.myScore}&commentsType=${this.commentsType}`
       })
     },
     async getItemComments () {
@@ -137,6 +138,7 @@ export default {
         this.item = res.data.data
       }
       this.status = res.data.status
+      this.myScore = res.data.myScore
     },
     async addRecord (status) {
       const userInfo = wx.getStorageSync('userInfo')
