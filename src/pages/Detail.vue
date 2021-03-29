@@ -139,6 +139,17 @@ export default {
       this.status = res.data.status
     },
     async addRecord (status) {
+      const userInfo = wx.getStorageSync('userInfo')
+      if (!userInfo) {
+        uni.switchTab({
+          url: '/pages/Mine'
+        })
+        uni.showToast({
+          icon: 'none',
+          title: '请先登录'
+        })
+        return
+      }
       if (status === 'doing' || status === 'none') {
         await this.$api.addRecord({
           openid: getApp().globalData.openid,

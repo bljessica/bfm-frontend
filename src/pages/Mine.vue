@@ -157,8 +157,43 @@ export default {
       })
       this.userAnalysis = res.data.data
     },
-    logIn () {
+    getOpenid () {
+      const openid = wx.getStorageSync('openid')
+      if (openid) {
+        getApp().globalData.openid = openid
+      } else {
+        return new Promise((resolve) => {
+          wx.login({
+            success (res) {
+              if (res.code) {
+                //发起网络请求
+                wx.request({
+                  url: 'https://api.weixin.qq.com/sns/jscode2session?appid=wxa1dbcf33cd13d747&secret=c064e88c0e80980d3762be30710428b2&js_code=' + 
+                    res.code + '&grant_type=authorization_code',
+                  data: {
+                    code: res.code
+                  },
+                  success(res) {
+                    //1.存用户信息到本地存储
+                    wx.setStorageSync('openid', res.data.openid)
+                    console.log('登录成功, openid' + res.data.openid)
+                    //2.存用户信息到全局变量
+                    getApp().globalData.openid = res.data.openid
+                    resolve()
+                  }
+                })
+              } else {
+                console.log('登录失败！' + res.errMsg)
+              }
+            }
+          })
+        })
+        
+      }
+    },
+    async logIn () {
       this.loading = true
+      await this.getOpenid()
       let that = this;
       uni.login({
         provider: 'weixin',
