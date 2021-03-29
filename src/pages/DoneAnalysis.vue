@@ -153,6 +153,9 @@ export default {
     }
   },
   methods: {
+    toJSON () {
+      return this
+    },
     showYearPie () {
       let that = this
       canvaPie = new uCharts({
