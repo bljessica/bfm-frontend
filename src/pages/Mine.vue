@@ -75,7 +75,7 @@
         <!-- 标题 -->
         <view class="time-line-wrapper__section-title">{{timeLineData[section].name}}</view>
         <!-- 统计 -->
-        <view class="time-line-wrapper__section-statistics time-line-wrapper__section-item">
+        <view class="time-line-wrapper__section-statistics time-line-wrapper__section-item" v-if="timeLineData[section].statistics">
           <div v-for="item in timeLineData[section].statistics" :key="item">
             <div>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</div>
             <div style="font-weight: bold;color: #2786e5;">{{item.count}}</div>
@@ -83,7 +83,14 @@
         </view>
         <!-- 内容 -->
         <view v-for="content in timeLineData[section].contents" :key="content.name" class="time-line-wrapper__section-item">
-          <view class="time-line-wrapper__section-item-title">{{dayjs(content.time).format('YYYY-MM-DD') + '  ' + KIND_STATUS[content.kind + '-' + content.status]}}</view>
+          <view 
+            class="time-line-wrapper__section-item-title"
+            :class="{
+              'time-line-wrapper__section-item-title--first-done-kind': section === 'first',
+              'time-line-wrapper__section-item-title--first-done-film': section === 'first' && content.kind === 'film',
+              'time-line-wrapper__section-item-title--first-done-book': section === 'first' && content.kind === 'book',
+              'time-line-wrapper__section-item-title--first-done-music': section === 'first' && content.kind === 'music'}"
+            v-html="getSectionItemTitle(section, content)"></view>
           <TimeLineSectionContentItem :record="content" class="time-line-wrapper__section-item-content" />
         </view>
       </view>
@@ -92,7 +99,7 @@
 </template>
 
 <script>
-import { KIND_STATUS } from '@/constants/constants.js'
+import { KIND_STATUS, KIND_STATUS_NAME, KIND_UNITS, KIND_NAMES } from '@/constants/constants.js'
 import TimeLineSectionContentItem from '@/components/mine/TimeLineSectionContentItem.vue'
 import dayjs from 'dayjs'
 
@@ -107,8 +114,7 @@ export default {
       userAnalysis: null,
       filmTags: null,
       timeLineData: null,
-      KIND_STATUS,
-      dayjs
+      KIND_STATUS
     }
   },
   async onLoad () {
@@ -158,6 +164,14 @@ export default {
     }
   },
   methods: {
+    getSectionItemTitle (section, content) {
+      if (section === 'first') {
+        return `<span style="color: black;font-weight: bold;">${KIND_STATUS_NAME[content.kind]}过的第一${KIND_UNITS[content.kind]}${KIND_NAMES[content.kind]}</span>
+          ${dayjs(content.time).format('YYYY-MM-DD')}`
+      } else {
+        return dayjs(content.time).format('YYYY-MM-DD') + '  ' + KIND_STATUS[content.kind + '-' + content.status]
+      }
+    },
     async getTimeLineData () {
       const res = await this.$api.getTimeLineData({
         openid: getApp().globalData.openid
@@ -470,6 +484,29 @@ export default {
   line-height: 28rpx;
   &:first-of-type {
     border-top: 1px solid #eeeeee;
+  }
+  &.time-line-wrapper__section-item-title--first-done-kind {
+    &::before {
+      width: 24rpx;
+      height: 24rpx;
+      border-radius: 0;
+      background-size: cover !important;
+    }
+  }
+  &.time-line-wrapper__section-item-title--first-done-music {
+    &::before {
+      background: url('/static/images/mine/music_analysis.png') no-repeat;
+    }
+  }
+  &.time-line-wrapper__section-item-title--first-done-film {
+    &::before {
+      background: url('/static/images/mine/film_analysis.png') no-repeat;
+    }
+  }
+  &.time-line-wrapper__section-item-title--first-done-book {
+    &::before {
+      background: url('/static/images/mine/book_analysis.png') no-repeat;
+    }
   }
   &::before {
     content: '';

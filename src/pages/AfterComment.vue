@@ -32,7 +32,8 @@ export default {
         status: 'after',
         score: this.score * 2,
         comment: this.afterComment,
-        commentTime: dayjs().format('YYYY年MM月DD日 HH:MM:ss')
+        commentTime: dayjs().format('YYYY年MM月DD日 HH:MM:ss'),
+        time: Date.now()
       })
       if (res.data.code === 0) {
         uni.showToast({

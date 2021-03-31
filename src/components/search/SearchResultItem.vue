@@ -39,6 +39,9 @@ export default {
     showBorder: {
       type: Boolean,
       default: true
+    },
+    kind: {
+      type: String
     }
   },
   data () {
@@ -47,13 +50,16 @@ export default {
     }
   },
   computed: {
+    itemKind () {
+      return this.item.kind || this.kind
+    },
     introduction () {
-      if (this.item.kind === 'film') {
+      if (this.itemKind === 'film') {
         return `${this.item.score || '暂无评'}分 / ${this.item.publishTime.substring(0, 4)} / 
           ${this.item.country} / ${this.item.type} / ${this.item.director} / ${this.item.actors}`
-      } else if (this.item.kind === 'music') {
+      } else if (this.itemKind === 'music') {
         return `${this.item.score || '暂无评'}分 / ${this.item.singer} / ${this.item.publishTime.substring(0, 4)}`
-      } else if (this.item.kind === 'book') {
+      } else if (this.itemKind === 'book') {
         return `${this.item.score || '暂无评'}分 / ${this.item.author} / ${this.item.publishTime.substring(0, 4)} / 
           ${this.item.publisher}`
       }
@@ -63,7 +69,7 @@ export default {
   methods: {
     goToDetail () {
       uni.navigateTo({
-        url: 'Detail?_id=' + this.item._id + '&kind=' + this.item.kind
+        url: 'Detail?_id=' + this.item._id + '&kind=' + this.itemKind
       })
     }
   }

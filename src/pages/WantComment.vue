@@ -28,7 +28,8 @@ export default {
         name: this.name,
         status: 'want',
         comment: this.wantComment,
-        commentTime: dayjs().format('YYYY年MM月DD日 HH:MM:ss')
+        commentTime: dayjs().format('YYYY年MM月DD日 HH:MM:ss'),
+        time: Date.now()
       })
       if (res.data.code === 0) {
         uni.showToast({

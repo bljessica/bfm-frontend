@@ -157,7 +157,8 @@ export default {
           openid: getApp().globalData.openid,
           kind: this.kind,
           name: this.item.name,
-          status
+          status,
+          time: Date.now()
         })
         await this.getDetail()
       } else {
