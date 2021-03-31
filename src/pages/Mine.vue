@@ -1,8 +1,8 @@
 <template>
-  <view>
+  <view style="background-color: #f7f7f7;">
     <view class="user-info-container">
-      <image src="/static/images/mine/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;z-index: -1;"></image>
-      <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;"></image>
+      <image src="/static/images/mine/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;"></image>
+      <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;z-index: 1;"></image>
       <view class="user-info-container__name" style="font-size: 34rpx;color: white;">
         {{(userInfo && userInfo.nickName) ? userInfo.nickName : '未登录'}}
       </view>
@@ -15,12 +15,12 @@
     <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
     <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的书影音 -->
-    <view class="my-bfm-container" v-if="userInfo" style="width: 90%;margin: 0 auto;" @click="goToMyBFM">
-      <view class="my-bfm-container__title" style="height: 70rpx;display: flex;align-items: center;justify-content: space-between;">
-        <span style="font-size: 28rpx;">我的书影音</span>
-        <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
+    <view class="my-bfm-container" v-if="userInfo" style="width: 100%;box-sizing: border-box;padding: 0 5%;background-color: #fff;" @click="goToMyBFM">
+      <view class="my-bfm-container__title my-actions__item">
+        <span>我的书影音</span>
+        <span>
           <span>全部</span>
-          <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;margin-left: 8rpx;"></image>
+          <image src="/static/images/right_arrow.png"></image>
         </span>
       </view>
       <!-- 观影分析 -->
@@ -52,17 +52,63 @@
         <image src="/static/images/right_arrow.png" style="width: 26rpx;height: 26rpx;"></image>
       </view>
     </view>
+    <!-- 我的评论 -->
+    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyBFM">
+      <span style="font-size: 28rpx;">我的评论</span>
+      <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
+        <span>全部</span>
+        <image src="/static/images/right_arrow.png"></image>
+      </span>
+    </view>
+    <!-- 我的评分 -->
+    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyBFM">
+      <span style="font-size: 28rpx;">我的评分</span>
+      <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
+        <span>全部</span>
+        <image src="/static/images/right_arrow.png"></image>
+      </span>
+    </view>
+    <!-- 时间线 -->
+    <view class="time-line-wrapper" v-if="userInfo && timeLineData">
+      <view class="time-line-wrapper__line"></view>
+      <view class="time-line-wrapper__section-wrapper" v-for="section in Object.keys(timeLineData)" :key="section">
+        <!-- 标题 -->
+        <view class="time-line-wrapper__section-title">{{timeLineData[section].name}}</view>
+        <!-- 统计 -->
+        <view class="time-line-wrapper__section-statistics time-line-wrapper__section-item">
+          <div v-for="item in timeLineData[section].statistics" :key="item">
+            <div>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</div>
+            <div style="font-weight: bold;color: #2786e5;">{{item.count}}</div>
+          </div>
+        </view>
+        <!-- 内容 -->
+        <view v-for="content in timeLineData[section].contents" :key="content.name" class="time-line-wrapper__section-item">
+          <view class="time-line-wrapper__section-item-title">{{dayjs(content.time).format('YYYY-MM-DD') + '  ' + KIND_STATUS[content.kind + '-' + content.status]}}</view>
+          <TimeLineSectionContentItem :record="content" class="time-line-wrapper__section-item-content" />
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
 <script>
+import { KIND_STATUS } from '@/constants/constants.js'
+import TimeLineSectionContentItem from '@/components/mine/TimeLineSectionContentItem.vue'
+import dayjs from 'dayjs'
+
 export default {
+  components: {
+    TimeLineSectionContentItem
+  },
   data () {
     return {
       userInfo: null,
       loading: false,
       userAnalysis: null,
-      filmTags: null
+      filmTags: null,
+      timeLineData: null,
+      KIND_STATUS,
+      dayjs
     }
   },
   async onLoad () {
@@ -76,8 +122,11 @@ export default {
     } 
   },
   async onShow () {
-    await this.getUserAnalysis()
-    await this.getFilmTagAnalysis()
+    if (getApp().globalData.openid) {
+      await this.getUserAnalysis()
+      await this.getFilmTagAnalysis()
+      await this.getTimeLineData()
+    }
   },
   computed: {
     filmTagAnalysis () {
@@ -109,6 +158,12 @@ export default {
     }
   },
   methods: {
+    async getTimeLineData () {
+      const res = await this.$api.getTimeLineData({
+        openid: getApp().globalData.openid
+      })
+      this.timeLineData = res.data.data
+    },
     goToDoneAnalysis (kind) {
       uni.navigateTo({
         url: 'DoneAnalysis?kind=' + kind
@@ -212,6 +267,7 @@ export default {
               })
               await that.getUserAnalysis()
               await that.getFilmTagAnalysis()
+              await that.getTimeLineData()
               uni.showToast({
                 icon: 'success',
                 title: '登录成功'
@@ -315,6 +371,118 @@ export default {
     justify-self: end;
     font-weight: bold;
     color: #333;
+  }
+}
+.my-actions__item {
+  height: 70rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20rpx;
+  background-color: #fff;
+  &:first-of-type {
+    margin-top: 0;
+  }
+  &.my-actions__item--no-subitems {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5%;
+  }
+  &>span:first-of-type {
+    font-size: 28rpx;
+  }
+  &>span:last-of-type {
+    font-size: 24rpx;
+    display: flex;
+    align-items: center;
+    color: #7B7B7B;
+    image {
+      width: 26rpx;
+      height: 26rpx;
+      margin-left: 8rpx;
+    }
+  }
+}
+.time-line-wrapper {
+  position: relative;
+  font-size: 20rpx;
+}
+.time-line-wrapper__line {
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  left: 40rpx;
+  top: 40rpx;
+  background: #ebebeb;
+  transform: translateX(-50%);
+}
+.time-line-wrapper__section-statistics {
+  color: #858585;
+  height: 110rpx;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  &>div {
+    width: 16%;
+    height: 60rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.time-line-wrapper__section-title {
+  font-size: 24rpx;
+  font-weight: bold;
+  background: #f7f7f7;
+  height: 40rpx;
+  line-height: 40rpx;
+  padding: 10rpx 0;
+  margin-left: 80rpx;
+  position: relative;
+  &::before {
+    content: '';
+    display: block;
+    width: 20rpx;
+    height: 20rpx;
+    border-radius: 50%;
+    border: 1px solid #d2d2d2;
+    background-color: #efefef;
+    box-sizing: border-box;
+    position: absolute;
+    left: -40rpx;
+    top: 30rpx;
+    transform: translateX(-50%) translateY(-50%);
+  }
+}
+.time-line-wrapper__section-item {
+  background-color: #fff;
+  padding: 0 20rpx 0 80rpx;
+  overflow: hidden;
+}
+.time-line-wrapper__section-item-title {
+  color: #898989;
+  padding-top: 20rpx;
+  position: relative;
+  height: 28rpx;
+  line-height: 28rpx;
+  &:first-of-type {
+    border-top: 1px solid #eeeeee;
+  }
+  &::before {
+    content: '';
+    display: block;
+    width: 12rpx;
+    height: 12rpx;
+    border-radius: 50%;
+    background-color: #ebeaea;
+    box-sizing: border-box;
+    position: absolute;
+    left: -40rpx;
+    top: 34rpx;
+    transform: translateX(-50%) translateY(-50%);
   }
 }
 </style>

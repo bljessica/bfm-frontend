@@ -1,7 +1,8 @@
 <template>
   <view class="search-result-item-container" @click="goToDetail">
     <image :src="item.coverSrc || '/static/images/book.png'" style="width: 100rpx;height: 130rpx;"></image>
-    <view class="search-result-item__info">
+    <view class="search-result-item__info"
+      :style="{borderBottom: showBorder ? '1px solid #ccc' : 'none'}">
       <view style="font-size: 20rpx;display: flex;align-items: center;">
         <image v-if="item.kind === 'film'" src="/static/images/search/play.png" style="width: 24rpx;height: 24rpx;margin-right: 5rpx;"></image>
         <span>
@@ -15,7 +16,7 @@
       </view>
       <view class="search-result-item__rate" v-else>暂无评分</view>
       <view style="font-size: 14rpx;color: #ccc;">
-        <span style="margin-right: 5rpx;color: black;display: inline-block;padding: 4rpx;background-color: #ddd;border-radius: 6rpx;">{{KIND_NAMES[item.kind]}}</span>
+        <span v-if="showTag" style="margin-right: 5rpx;color: black;display: inline-block;padding: 4rpx;background-color: #ddd;border-radius: 6rpx;">{{KIND_NAMES[item.kind]}}</span>
         <span>{{introduction}}</span>
       </view>
     </view>
@@ -30,6 +31,14 @@ export default {
     item: {
       type: Object,
       default: {}
+    },
+    showTag: {
+      type: Boolean,
+      default: true
+    },
+    showBorder: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -75,7 +84,6 @@ export default {
   flex-direction: column;
   justify-content: start;
   align-items: start;
-  border-bottom: 1px solid #ccc;
   padding: 30rpx 0;
 }
 .search-result-item__rate {

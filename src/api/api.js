@@ -102,6 +102,14 @@ export const getDoneItemsAnalysis = (data) => {
   })
 }
 
+export const getTimeLineData = (data) => {
+  return request({
+    url: '/timeLineData',
+    data,
+    method: 'GET'
+  })
+}
+
 // likeComment
 export const likeOrUnlikeComment = (data) => {
   return request({
