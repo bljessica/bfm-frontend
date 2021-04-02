@@ -5,22 +5,17 @@
     <!-- 短评 -->
     <view class="brief-comments-container">
       <!-- 标题 -->
-      <view class="brief-comments-container__title" style="position: relative;display: flex;justify-content: space-between;align-items: center;">
+      <view class="brief-comments-container__title" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="display: flex;align-items: center;font-weight: bold;">
           <span style="font-size: 26rpx;">短评</span> 
           <span style="font-size: 18rpx;color: #666;margin-left: 5rpx;">{{comments.length}}条</span>
         </span>
-        <span style="font-size: 18rpx;color: #999;" @click.stop="showCommentTypeOptions = !showCommentTypeOptions">
-          {{commentsType === 'want' ? '想看' : '看过'}}
-          <image src="/static/images/up_arrow.png" 
-            :style="{transform: showCommentTypeOptions ? 'rotate(0)' : 'rotate(180deg)'}"
-            style="width: 18rpx;height: 18rpx;margin-left: 5rpx;position: relative;top: 2rpx;transition: all .2s;" />
-        </span>
-        <!-- 评论类型选择框 -->
-        <view class="comment-type-options-container" v-show="showCommentTypeOptions">
-          <view class="comment-type-options" :class="{'comment-type-options--active': commentsType === 'want'}" @click.stop="changeCommentsType('want')">想看</view>
-          <view class="comment-type-options" :class="{'comment-type-options--active': commentsType === 'after'}" @click.stop="changeCommentsType('after')">看过</view>
-        </view>
+        <CommentTypeSelector 
+          :commentsType="commentsType"
+          :showCommentTypeOptions="showCommentTypeOptions"
+          @changeCommentsType="changeCommentsType"
+          @showCommentTypeOptionsChange="showCommentTypeOptions = !showCommentTypeOptions"
+        />
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
@@ -32,12 +27,14 @@
 
 <script>
 import DetailScore from '@/components/detail/DetailScore.vue'
-import BriefComment from '@/components/detail/BriefComment.vue'
+import BriefComment from '@/components/comment/BriefComment.vue'
+import CommentTypeSelector from '@/components/comment/CommentTypeSelector.vue'
 
 export default {
   components: {
     DetailScore,
-    BriefComment
+    BriefComment,
+    CommentTypeSelector
   },
   data () {
     return {
@@ -101,23 +98,5 @@ export default {
   padding-bottom: 0;
   border-top: 1px solid #ddd;
   background: #F3F7F6;
-}
-.comment-type-options-container {
-  position: absolute;
-  top: 40rpx;
-  right: 0;
-  width: 120rpx;
-  box-shadow: 1px 1px 1px 1px #ddd;
-  text-align: center;
-  .comment-type-options {
-    width: 100%;
-    height: 50rpx;
-    line-height: 50rpx;
-    color: #999;
-    border: 1px solid #ddd;
-    &.comment-type-options--active {
-      color: #42BD56;
-    }
-  }
 }
 </style>

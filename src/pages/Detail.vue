@@ -58,7 +58,7 @@
 
 <script>
 import DetailScore from '@/components/detail/DetailScore.vue'
-import BriefComment from '@/components/detail/BriefComment.vue'
+import BriefComment from '@/components/comment/BriefComment.vue'
 import { KIND_STATUS_NAME } from '@/constants/constants'
 
 export default {
