@@ -53,16 +53,8 @@
       </view>
     </view>
     <!-- 我的评论 -->
-    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyBFM">
+    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyComments">
       <span style="font-size: 28rpx;">我的评论</span>
-      <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
-        <span>全部</span>
-        <image src="/static/images/right_arrow.png"></image>
-      </span>
-    </view>
-    <!-- 我的评分 -->
-    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyBFM">
-      <span style="font-size: 28rpx;">我的评分</span>
       <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
         <span>全部</span>
         <image src="/static/images/right_arrow.png"></image>
@@ -193,6 +185,9 @@ export default {
     },
     goToMyBFM () {
       uni.navigateTo({url: 'MyBFM'})
+    },
+    goToMyComments () {
+      uni.navigateTo({url: 'MyComments'})
     },
     async getFilmTagAnalysis () {
       const res = await this.$api.getFilmTagAnalysis({

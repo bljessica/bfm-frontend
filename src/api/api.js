@@ -70,6 +70,14 @@ export const getItemComments = (data) => {
   })
 }
 
+export const getUserComments = (data) => {
+  return request({
+    url: '/userComments',
+    data,
+    method: 'GET'
+  })
+}
+
 export const getUserAnalysis = (data) => {
   return request({
     url: '/userAnalysis',

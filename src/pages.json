@@ -94,6 +94,12 @@
         "navigationBarBackgroundColor": "#F3F7F6",
         "navigationBarTextStyle": "black"
 			}
+		},
+    {
+			"path": "pages/MyComments",
+			"style": {
+				"navigationBarTitleText": "我的评论"
+			}
 		}
 	],
 	"globalStyle": {
