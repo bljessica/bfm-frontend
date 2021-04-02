@@ -11,7 +11,11 @@
     </view>
     <view class="my-comments-wrapper__contents-wrapper">
       <view class="my-comments-wrapper__contents-wrapper__content" v-for="content in comments" :key="content.name">
-        <view style="color: #898989;padding-top: 15rpx;border-top: 1px solid #eeeeee;">{{dayjs(content.time).format('YYYY-MM-DD HH:mm:ss')}}</view>
+        <view style="color: #898989;padding-top: 15rpx;border-top: 1px solid #eeeeee;">
+          <span>{{dayjs(content.time).format('YYYY-MM-DD HH:mm:ss')}}</span>
+          <icon type="clear" size="12" style="float: right;" @click="deleteComment(content._id)" />
+          <icon type="warn" size="12" style="float: right;margin-right: 10rpx;" @click.stop="startEditComment(content._id)" />
+        </view>
         <TimeLineSectionContentItem :record="content" />
       </view>
       <view v-if="!comments.length" style="padding: 20rpx 0;color: #a1a1a1;border-top: 1px solid #eeeeee;">
@@ -19,6 +23,16 @@
       </view>
     </view>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-popup ref="editingCommentDialog" type="dialog">
+      <uni-popup-dialog 
+        mode="input" 
+        title="请输入评论内容" 
+        :duration="0" 
+        :before-close="true" 
+        @close="cancelEditingComment" 
+        @confirm="editComment"
+      />
+  </uni-popup>
   </view>
 </template>
 
@@ -26,11 +40,15 @@
 import CommentTypeSelector from '@/components/comment/CommentTypeSelector.vue'
 import TimeLineSectionContentItem from '@/components/mine/TimeLineSectionContentItem.vue'
 import dayjs from 'dayjs'
+import { uniPopup } from '@dcloudio/uni-ui'
+import uniPopupDialog from '@dcloudio/uni-ui/lib/uni-popup-dialog/uni-popup-dialog.vue'
 
 export default {
   components: {
     CommentTypeSelector,
-    TimeLineSectionContentItem
+    TimeLineSectionContentItem,
+    uniPopup,
+    uniPopupDialog
   },
   data () {
     return {
@@ -53,6 +71,29 @@ export default {
     await this.getUserComments()
   },
   methods: {
+    cancelEditingComment (done) {
+      this.editingCommentId = null
+      done()
+    },
+    startEditComment (_id) {
+      this.editingCommentId = _id
+      this.$refs.editingCommentDialog.open()
+    },
+    async editComment (done, value) {
+      await this.$api.editComment({
+        _id: this.editingCommentId,
+        comment: value
+      })
+      done()
+      this.editingCommentId = null
+      await this.getUserComments()
+    },
+    async deleteComment (_id) {
+      await this.$api.deleteComment({
+        _id
+      })
+      await this.getUserComments()
+    },
     async getUserComments () {
       this.loading = true
       const res = await this.$api.getUserComments({

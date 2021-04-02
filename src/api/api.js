@@ -78,6 +78,22 @@ export const getUserComments = (data) => {
   })
 }
 
+export const editComment = (data) => {
+  return request({
+    url: '/editComment',
+    data,
+    method: 'PUT'
+  })
+}
+
+export const deleteComment = (data) => {
+  return request({
+    url: '/deleteComment',
+    data,
+    method: 'DELETE'
+  })
+}
+
 export const getUserAnalysis = (data) => {
   return request({
     url: '/userAnalysis',

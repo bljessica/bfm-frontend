@@ -12,7 +12,11 @@
         :value="record.score / 2" 
         color="#7b7b7b" 
       />
-      <view :style="{marginTop: showRate ? '10rpx' : 0}">{{record.comment}}</view>
+      <view :style="{marginTop: showRate ? '10rpx' : 0}" style="display: flex;align-items: center;justify-content: space-between;">
+        <view class="time-line-section-content-item-wrapper__content">{{record.comment}}</view>
+        <image src="/static/images/detail/good.png" style="width: 20rpx;height: 20rpx;margin: 0 4rpx 0 10rpx;"></image>
+        <span>{{record.commentLikedNum}}</span>
+      </view>
     </view>
   </view>
 </template>
@@ -37,3 +41,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.time-line-section-content-item-wrapper__content {
+  flex: 1;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+</style>
