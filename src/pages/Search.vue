@@ -4,7 +4,7 @@
     <view class="books-search-bar-container" style="background-color: #42BD56;width: 100%;height: 70rpx;" >
       <view class="books-search-bar">
         <image src="/static/images/search/search.png" style="width: 24rpx;height: 24rpx;margin: 0 5rpx;"></image>
-        <input :focus="true" v-model="searchText" type="text" style="flex: 1" placeholder="搜索"/>
+        <input focus v-model="searchText" type="text" style="flex: 1" placeholder="搜索"/>
       </view>
     </view>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
@@ -28,16 +28,21 @@ export default {
     return {
       searchText: '',
       loading: false,
-      searchResults: []
+      searchResults: [],
+      focus: false
     }
   },
   watch: {
     searchText: {
       handler: debounce(async function (val) {
-        this.loading = true
-        const res = await this.$api.search({searchText: val})
-        this.searchResults = res.data.data
-        this.loading = false
+        if (val) {
+          this.loading = true
+          const res = await this.$api.search({searchText: val})
+          this.searchResults = res.data.data
+          this.loading = false
+        } else {
+          this.searchResults = []
+        }
       }, 200),
       immediate: true
     }

@@ -89,7 +89,11 @@
           </view>
           <TimeLineSectionContentItem :record="content" class="time-line-wrapper__section-item-content" />
         </view>
-        <view v-if="(!timeLineData[section].contents.length && (!timeLineData[section].statistics || timeLineData[section].statistics.length))" class="time-line-wrapper__section-blank" style="padding-top: 40rpx;">
+        <view 
+          v-if="(!timeLineData[section].contents.length && (!timeLineData[section].statistics || timeLineData[section].statistics.length))" 
+          class="time-line-wrapper__section-blank" 
+          style="padding-top: 40rpx;"
+        >
           暂无数据，快去标记吧~
         </view>
       </view>

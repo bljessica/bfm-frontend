@@ -14,6 +14,9 @@
         <view style="color: #898989;padding-top: 15rpx;border-top: 1px solid #eeeeee;">{{dayjs(content.time).format('YYYY-MM-DD HH:mm:ss')}}</view>
         <TimeLineSectionContentItem :record="content" />
       </view>
+      <view v-if="!comments.length" style="padding: 20rpx 0;color: #a1a1a1;border-top: 1px solid #eeeeee;">
+        暂无评论，快去标记吧~
+      </view>
     </view>
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
