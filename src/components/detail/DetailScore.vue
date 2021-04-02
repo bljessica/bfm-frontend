@@ -10,7 +10,7 @@
     <view style="color: #999;font-size: 16rpx;">我的评分</view>
     <view style="margin-left: 10rpx;color: #999;display: flex;align-items: center;margin: 0 auto;font-size: 16rpx;">
       <uni-rate style="display: inline-block;margin-right: 8rpx;" allow-half :size="6" :value="myScore / 2" />
-      <span>{{(myScore === null || myScore === undefined) ? '暂无' : myScore}}</span>
+      <span>{{scoreDisplay}}</span>
     </view>
   </view>
 </template>
@@ -23,7 +23,12 @@ export default {
       default: 0
     },
     myScore: {
-      type: Object
+      type: Number
+    }
+  },
+  computed: {
+    scoreDisplay () {
+      return this.myScore < 0 ? '暂无' : this.myScore
     }
   }
 }

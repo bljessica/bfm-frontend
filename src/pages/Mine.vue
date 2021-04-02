@@ -80,6 +80,9 @@
             <div>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</div>
             <div style="font-weight: bold;color: #2786e5;">{{item.count}}</div>
           </div>
+          <view v-if="!timeLineData[section].statistics.length" class="time-line-wrapper__section-blank" style="padding-left: 0;">
+            暂无统计数据，快去标记吧~
+          </view>
         </view>
         <!-- 内容 -->
         <view v-for="content in timeLineData[section].contents" :key="content.name" class="time-line-wrapper__section-item">
@@ -90,8 +93,12 @@
               'time-line-wrapper__section-item-title--first-done-film': section === 'first' && content.kind === 'film',
               'time-line-wrapper__section-item-title--first-done-book': section === 'first' && content.kind === 'book',
               'time-line-wrapper__section-item-title--first-done-music': section === 'first' && content.kind === 'music'}"
-            v-html="getSectionItemTitle(section, content)"></view>
+            v-html="getSectionItemTitle(section, content)">
+          </view>
           <TimeLineSectionContentItem :record="content" class="time-line-wrapper__section-item-content" />
+        </view>
+        <view v-if="(!timeLineData[section].contents.length && (!timeLineData[section].statistics || timeLineData[section].statistics.length))" class="time-line-wrapper__section-blank" style="padding-top: 40rpx;">
+          暂无数据，快去标记吧~
         </view>
       </view>
     </view>
@@ -120,6 +127,7 @@ export default {
   async onLoad () {
     let userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
+      await this.getOpenid()
       this.userInfo = JSON.parse(userInfo)
       await this.$api.addUser({
         ...userInfo,
@@ -231,6 +239,7 @@ export default {
       const openid = wx.getStorageSync('openid')
       if (openid) {
         getApp().globalData.openid = openid
+        return true
       } else {
         return new Promise((resolve) => {
           wx.login({
@@ -249,11 +258,20 @@ export default {
                     console.log('登录成功, openid' + res.data.openid)
                     //2.存用户信息到全局变量
                     getApp().globalData.openid = res.data.openid
-                    resolve()
+                    resolve(true)
+                  },
+                  fail (err) {
+                    console.log('登录失败', err)
+                    uni.showToast({
+                      icon: 'none',
+                      title: '用户未授权'
+                    })
+                    resolve(false)
                   }
                 })
               } else {
                 console.log('登录失败！' + res.errMsg)
+                resolve(false)
               }
             }
           })
@@ -261,44 +279,48 @@ export default {
         
       }
     },
-    async logIn () {
-      this.loading = true
-      await this.getOpenid()
-      let that = this;
-      uni.login({
-        provider: 'weixin',
-        success: function (loginRes) {
-          // 获取用户信息
-          uni.getUserInfo({
-            provider: 'weixin',
-            success: async (infoRes) => {
-              console.log('用户信息', infoRes.userInfo)
-              that.userInfo = infoRes.userInfo
-              wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
-              await that.$api.addUser({
-                ...infoRes.userInfo,
-                openid: getApp().globalData.openid
-              })
-              await that.getUserAnalysis()
-              await that.getFilmTagAnalysis()
-              await that.getTimeLineData()
-              uni.showToast({
-                icon: 'success',
-                title: '登录成功'
-              })
-            },
-            fail () {
-              uni.showToast({
-                icon: 'none',
-                title: '用户未授权'
-              })
-            },
-            complete () {
-              that.loading = false
-            }
-          })
-        }
+    getUserProfile () {
+      let that = this
+      return new Promise((resolve, reject) => {
+        wx.getUserProfile({
+          desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中
+          success:  (infoRes) => {
+            console.log('用户信息', infoRes.userInfo)
+            that.userInfo = infoRes.userInfo
+            wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
+            uni.showToast({
+              icon: 'success',
+              title: '登录成功'
+            })
+            resolve(true)
+          },
+          fail (err) {
+            console.log('获取用户信息失败', err)
+            uni.showToast({
+              icon: 'none',
+              title: '用户未授权'
+            })
+            resolve(false)
+          }
+        })
       })
+    },
+    async logIn () {
+      const loginRes = await this.getOpenid()
+      if (loginRes) {
+        const res = await this.getUserProfile()
+        if (res) {
+          this.loading = true
+          await this.$api.addUser({
+            ...this.userInfo,
+            openid: getApp().globalData.openid
+          })
+          await this.getUserAnalysis()
+          await this.getFilmTagAnalysis()
+          await this.getTimeLineData()
+          this.loading = false
+        }
+      }
     }
   }
 }
@@ -521,5 +543,10 @@ export default {
     top: 34rpx;
     transform: translateX(-50%) translateY(-50%);
   }
+}
+.time-line-wrapper__section-blank {
+  background-color: #fff;
+  color: #a1a1a1;
+  padding: 20rpx 0 20rpx 80rpx;
 }
 </style>

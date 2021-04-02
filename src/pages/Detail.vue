@@ -138,7 +138,7 @@ export default {
         this.item = res.data.data
       }
       this.status = res.data.status
-      this.myScore = res.data.myScore
+      this.myScore = (res.data.myScore === null || res.data.myScore === undefined) ? -1 : res.data.myScore
     },
     async addRecord (status) {
       const userInfo = wx.getStorageSync('userInfo')
