@@ -14,9 +14,17 @@
     </view>
     <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
     <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
+    <!-- 我的信息 -->
+    <view class="my-actions__item" v-if="userInfo" @click="goToMyInfo">
+      <span>我的信息</span>
+      <span>
+        <span>全部</span>
+        <image src="/static/images/right_arrow.png"></image>
+      </span>
+    </view>
     <!-- 我的书影音 -->
     <view class="my-bfm-container" v-if="userInfo" style="width: 100%;box-sizing: border-box;padding: 0 5%;background-color: #fff;" @click="goToMyBFM">
-      <view class="my-bfm-container__title my-actions__item">
+      <view class="my-bfm-container__title my-actions__item" style="padding: 0;">
         <span>我的书影音</span>
         <span>
           <span>全部</span>
@@ -53,9 +61,9 @@
       </view>
     </view>
     <!-- 我的评论 -->
-    <view class="my-actions__item my-actions__item--no-subitems" v-if="userInfo" @click="goToMyComments">
-      <span style="font-size: 28rpx;">我的评论</span>
-      <span style="font-size: 24rpx;display: flex;align-items: center;color: #7B7B7B;">
+    <view class="my-actions__item" v-if="userInfo" @click="goToMyComments">
+      <span>我的评论</span>
+      <span>
         <span>全部</span>
         <image src="/static/images/right_arrow.png"></image>
       </span>
@@ -189,6 +197,9 @@ export default {
     },
     goToMyBFM () {
       uni.navigateTo({url: 'MyBFM'})
+    },
+    goToMyInfo () {
+      uni.navigateTo({url: 'MyInfo'})
     },
     goToMyComments () {
       uni.navigateTo({url: 'MyComments'})
@@ -415,14 +426,9 @@ export default {
   justify-content: space-between;
   margin-top: 20rpx;
   background-color: #fff;
-  &:first-of-type {
-    margin-top: 0;
-  }
-  &.my-actions__item--no-subitems {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 5%;
-  }
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 5%;
   &>span:first-of-type {
     font-size: 28rpx;
   }

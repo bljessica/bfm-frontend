@@ -150,3 +150,15 @@ export const TYPE_ICONS_URL = {
     }
   }
 }
+
+export const USER_INFOS = {
+  avatarUrl: '头像',
+  city: '城市',
+  gender: '性别',
+  nickName: '昵称'
+}
+
+export const USER_GENDER = {
+  1: '男',
+  2: '女'
+}
