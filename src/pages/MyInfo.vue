@@ -1,5 +1,5 @@
 <template>
-  <view class="my-info-container" v-if="userInfo">
+  <view class="my-info-container">
     <!-- 用户信息显示 -->
     <view class="my-info__item" v-for="item in Object.keys(userInfo || {})" :key="item">
       <view>{{USER_INFOS[item]}}</view>
@@ -30,8 +30,9 @@
         @confirm="editNickname"
       />
     </uni-popup>
+    <!-- 加载图标 -->
+    <uni-load-more v-if="!userInfo && loading" iconType="circle" status="loading"></uni-load-more>
   </view>
-  <view v-else style="text-align: center;color: #eee;padding: 20rpx 0;">暂无用户信息</view>
 </template>
 
 <script>
@@ -50,7 +51,8 @@ export default {
       USER_INFOS,
       USER_GENDER,
       genderOptions: [],
-      cityOptions: []
+      cityOptions: [],
+      loading: false
     }
   },
   onLoad () {
@@ -123,6 +125,7 @@ export default {
       }
     },
     async getUserInfo () {
+      this.loading = true
       const res = await this.$api.getUserInfo({
         openid: getApp().globalData.openid
       })
@@ -131,6 +134,7 @@ export default {
         acc[key] = userInfo[key]
         return acc
       }, {})
+      this.loading = false
     },
     showUpdateSuccessfullyMsg () {
       uni.showToast({
