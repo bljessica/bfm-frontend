@@ -53,6 +53,22 @@ export const addUser = (data) => {
   })
 }
 
+export const getUserInfo = (data) => {
+  return request({
+    url: '/userInfo',
+    data,
+    method: 'GET'
+  })
+}
+
+export const updateUser = (data) => {
+  return request({
+    url: '/updateUser',
+    data,
+    method: 'PUT'
+  })
+}
+
 // record
 export const addRecord = (data) => {
   return request({

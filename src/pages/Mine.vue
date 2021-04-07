@@ -3,13 +3,13 @@
     <view class="user-info-container">
       <image src="/static/images/mine/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;"></image>
       <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;z-index: 1;"></image>
-      <view class="user-info-container__name" style="font-size: 34rpx;color: white;">
+      <view class="user-info-container__name" style="font-size: 34rpx;color: white;z-index: 1;">
         {{(userInfo && userInfo.nickName) ? userInfo.nickName : '未登录'}}
       </view>
       <!-- 登出按钮 -->
       <view class="user-info-container__log-out-btn" @click="logOut" v-if="userInfo">
-        <image src="/static/images/mine/quit.png" style="width: 24rpx;height: 24rpx;margin-right: 6rpx;"></image>
-        <span>退出</span>
+        <image src="/static/images/mine/quit.png" style="width: 30rpx;height: 30rpx;margin-right: 6rpx;"></image>
+        <span>登出</span>
       </view>
     </view>
     <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
@@ -128,22 +128,11 @@ export default {
       KIND_STATUS
     }
   },
-  async onLoad () {
-    let userInfo = wx.getStorageSync('userInfo')
-    if (userInfo) {
-      await this.getOpenid()
-      this.userInfo = JSON.parse(userInfo)
-      await this.$api.addUser({
-        ...userInfo,
-        openid: getApp().globalData.openid
-      })
-    } 
-  },
   async onShow () {
     if (getApp().globalData.openid) {
-      await this.getUserAnalysis()
-      await this.getFilmTagAnalysis()
-      await this.getTimeLineData()
+      await this.refresh()
+    } else {
+      this.userInfo = null
     }
   },
   computed: {
@@ -176,6 +165,18 @@ export default {
     }
   },
   methods: {
+    async refresh () {
+      await this.getUserInfo()
+      await this.getUserAnalysis()
+      await this.getFilmTagAnalysis()
+      await this.getTimeLineData()
+    },
+    async getUserInfo () {
+      const res = await this.$api.getUserInfo({
+        openid: getApp().globalData.openid
+      })
+      this.userInfo = res.data.data
+    },
     getSectionItemTitle (section, content) {
       if (section === 'first') {
         return `<span style="color: black;font-weight: bold;">${KIND_STATUS_NAME[content.kind]}过的第一${KIND_UNITS[content.kind]}${KIND_NAMES[content.kind]}</span>
@@ -230,7 +231,6 @@ export default {
       return (analysis && analysis.count) || 0
     },
     logOut () {
-      wx.setStorageSync('userInfo', null)
       wx.setStorageSync('openid', null)
       getApp().globalData.openid = null
       this.userInfo = null
@@ -294,10 +294,10 @@ export default {
       return new Promise((resolve, reject) => {
         wx.getUserProfile({
           desc: '用于完善用户资料', // 声明获取用户个人信息后的用途，后续会展示在弹窗中
+          lang: 'zh_CN',
           success:  (infoRes) => {
             console.log('用户信息', infoRes.userInfo)
             that.userInfo = infoRes.userInfo
-            wx.setStorageSync('userInfo', JSON.stringify(infoRes.userInfo))
             uni.showToast({
               icon: 'success',
               title: '登录成功'
@@ -316,21 +316,24 @@ export default {
       })
     },
     async logIn () {
+      this.loading = true
       const loginRes = await this.getOpenid()
       if (loginRes) {
-        const res = await this.getUserProfile()
-        if (res) {
-          this.loading = true
-          await this.$api.addUser({
-            ...this.userInfo,
-            openid: getApp().globalData.openid
-          })
-          await this.getUserAnalysis()
-          await this.getFilmTagAnalysis()
-          await this.getTimeLineData()
-          this.loading = false
+        const userRecordRes = await this.$api.getUserInfo({
+          openid: getApp().globalData.openid
+        })
+        if (userRecordRes.data.code) { // 未存
+          const res = await this.getUserProfile()
+          if (res) {
+            await this.$api.addUser({
+              ...this.userInfo,
+              openid: getApp().globalData.openid
+            })
+          }
         }
+        await this.refresh()
       }
+      this.loading = false
     }
   }
 }

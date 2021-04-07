@@ -135,13 +135,16 @@ export default {
       return [] 
     }
   },
-  onLoad (options) {
+  async onLoad (options) {
     this.kind = options.kind
-    this.userInfo = JSON.parse(wx.getStorageSync('userInfo'))
   },
   async onShow () {
     this.loading = true
-    const res = await this.$api.getDoneItemsAnalysis({
+    let res = await this.$api.getUserInfo({
+      openid: getApp().globalData.openid
+    })
+    this.userInfo = res.data.data
+    res = await this.$api.getDoneItemsAnalysis({
       openid: getApp().globalData.openid,
       kind: this.kind
     })

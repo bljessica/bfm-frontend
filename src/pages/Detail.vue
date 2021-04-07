@@ -141,8 +141,7 @@ export default {
       this.myScore = (res.data.myScore === null || res.data.myScore === undefined) ? -1 : res.data.myScore
     },
     async addRecord (status) {
-      const userInfo = wx.getStorageSync('userInfo')
-      if (!userInfo) {
+      if (!getApp().globalData.openid) {
         uni.switchTab({
           url: '/pages/Mine'
         })
