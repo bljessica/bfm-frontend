@@ -32,7 +32,7 @@
         @close="cancelEditingComment" 
         @confirm="editComment"
       />
-  </uni-popup>
+    </uni-popup>
   </view>
 </template>
 

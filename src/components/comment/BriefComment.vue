@@ -8,7 +8,7 @@
         <span style="font-size: 18rpx;color: #999;">{{formatedCommentTime}}</span>
       </view>
     </view>
-    <view class="comment-content" style="margin: 20rpx 0 10rpx 0;">{{comment.comment}}</view>
+    <view class="comment-content" style="margin: 20rpx 0 10rpx 0;word-break: break-all;word-wrap: break-word;">{{comment.comment}}</view>
     <view class="comment-liked-num" style="font-size: 18rpx;color: #999;">
       <image @click="likeOrUnlikeComment(comment._id)" v-if="!comment.liked" src="/static/images/detail/good.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
       <image @click="likeOrUnlikeComment(comment._id)" v-else src="/static/images/detail/good_on.png" style="width: 20rpx;height: 20rpx;margin-right: 5rpx;position: relative;top: 5rpx;"></image>
