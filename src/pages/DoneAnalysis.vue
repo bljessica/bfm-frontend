@@ -122,7 +122,7 @@ export default {
     },
     countryDataSeries () {
       if (this.analysisData?.itemInfos?.country) {
-        const total = Object.values(this.analysisData.itemInfos.country).reduce((acc, num) => (acc + num))
+        const total = Object.values(this.analysisData.itemInfos.country).reduce((acc, num) => (acc + num), 0)
         const arr = Object.entries(this.analysisData.itemInfos.country).map((tmp, i) => {
           return {
             name: tmp[0],

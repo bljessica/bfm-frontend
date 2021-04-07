@@ -76,10 +76,10 @@
         <view class="time-line-wrapper__section-title">{{timeLineData[section].name}}</view>
         <!-- 统计 -->
         <view class="time-line-wrapper__section-statistics time-line-wrapper__section-item" v-if="timeLineData[section].statistics">
-          <div v-for="item in timeLineData[section].statistics" :key="item">
-            <div>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</div>
-            <div style="font-weight: bold;color: #2786e5;">{{item.count}}</div>
-          </div>
+          <view v-for="item in timeLineData[section].statistics" :key="item">
+            <view>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</view>
+            <view style="font-weight: bold;color: #2786e5;">{{item.count}}</view>
+          </view>
           <view v-if="!timeLineData[section].statistics.length" class="time-line-wrapper__section-blank" style="padding-left: 0;">
             暂无统计数据，快去标记吧~
           </view>
@@ -466,7 +466,7 @@ export default {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  &>div {
+  &>view {
     width: 16%;
     height: 60rpx;
     display: flex;
