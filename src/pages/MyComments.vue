@@ -13,8 +13,14 @@
       <view class="my-comments-wrapper__contents-wrapper__content" v-for="content in comments" :key="content.name">
         <view style="color: #898989;padding-top: 15rpx;border-top: 1px solid #eeeeee;">
           <span>{{dayjs(content.time).format('YYYY-MM-DD HH:mm:ss')}}</span>
-          <icon type="clear" size="12" style="float: right;" @click="deleteComment(content._id)" />
-          <icon type="warn" size="12" style="float: right;margin-right: 10rpx;" @click.stop="startEditComment(content._id)" />
+          <span style="float: right;" @click="deleteComment(content._id)">
+            <image src="/static/images/mine/delete.png" class="comment-action-icon"></image>
+            <span>删除</span>
+          </span>
+          <span style="float: right;margin-right: 16rpx;" @click.stop="startEditComment(content._id)">
+            <image src="/static/images/mine/edit.png" class="comment-action-icon"></image>
+            <span>编辑</span>
+          </span>
         </view>
         <TimeLineSectionContentItem :record="content" />
       </view>
@@ -111,6 +117,11 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.comment-action-icon {
+  width: 24rpx;
+  height: 24rpx;
+  vertical-align: middle;
+  margin-right: 6rpx;
+}
 </style>
