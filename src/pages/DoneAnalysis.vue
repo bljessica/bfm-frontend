@@ -3,7 +3,7 @@
     <view class="user-info-container" v-if="userInfo && analysisData.total">
       <image :src="userInfo.avatarUrl || '/static/images/default_avatar.png'" style="width: 80rpx;height: 80rpx;border-radius: 50%;grid-area: a;"></image>
       <span style="grid-area: b;font-size: 28rpx;font-weight: bold;">{{userInfo.nickName}}</span>
-      <span style="grid-area: c;font-size: 20rpx;color: #999;">在豆瓣一共标记{{KIND_STATUS_NAME[kind]}}过</span>
+      <span style="grid-area: c;font-size: 20rpx;color: #999;">在书影音社区一共标记{{KIND_STATUS_NAME[kind]}}过</span>
       <span style="grid-area: d;font-weight: bold;font-size: 20rpx;text-align: center;">
         <span style="font-size: 40rpx;">{{analysisData.total}}</span><br />
         {{KIND_UNITS[kind] + KIND_NAMES[kind]}}
