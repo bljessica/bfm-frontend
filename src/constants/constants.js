@@ -110,7 +110,7 @@ export const TYPE_ICONS_URL = {
     }
   },
   book: {
-    '计算机': {
+    '计算机图书': {
       imgUrl: '/static/images/typeIcons/book/computer.png'
     },
     '名著': {

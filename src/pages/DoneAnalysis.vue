@@ -246,7 +246,7 @@ export default {
   align-items: center;
   justify-content: center;
   color: #fff;
-  width: 120rpx;
+  width: 160rpx;
   height: 50rpx;
   background-color: #342309;
   border-radius: 15rpx 0 0 15rpx;
@@ -254,8 +254,8 @@ export default {
 }
 .type-container__num-container {
   position: absolute;
-  width: calc(100% - 120rpx);
-  left: 120rpx;
+  width: calc(100% - 160rpx);
+  left: 160rpx;
   top: 0;
   height: 50rpx;
 }
@@ -301,6 +301,7 @@ export default {
   align-items: center;
   border-radius: 10rpx;
   overflow: hidden;
+  border: 1px solid #ddd;
 }
 .recent-items-display__img-wrapper__img {
   position: absolute;
