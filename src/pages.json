@@ -106,6 +106,12 @@
 			"style": {
 				"navigationBarTitleText": "我的信息"
 			}
+		},
+    {
+			"path": "pages/Admin",
+			"style": {
+				"navigationBarTitleText": "管理员页面"
+			}
 		}
 	],
 	"globalStyle": {

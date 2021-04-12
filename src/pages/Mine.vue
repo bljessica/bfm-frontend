@@ -68,6 +68,13 @@
         <image src="/static/images/right_arrow.png"></image>
       </span>
     </view>
+    <!-- 管理员入口-->
+    <view class="my-actions__item" v-if="userInfo && userInfo.isAdmin" @click="goToAdmin">
+      <span>管理员入口</span>
+      <span>
+        <image src="/static/images/right_arrow.png"></image>
+      </span>
+    </view>
     <!-- 时间线 -->
     <view class="time-line-wrapper" v-if="userInfo && timeLineData">
       <view class="time-line-wrapper__line"></view>
@@ -110,7 +117,7 @@
 </template>
 
 <script>
-import { KIND_STATUS, KIND_STATUS_NAME, KIND_UNITS, KIND_NAMES } from '@/constants/constants.js'
+import { KIND_STATUS, KIND_DETAILS } from '@/constants/constants.js'
 import TimeLineSectionContentItem from '@/components/mine/TimeLineSectionContentItem.vue'
 import dayjs from 'dayjs'
 
@@ -179,7 +186,7 @@ export default {
     },
     getSectionItemTitle (section, content) {
       if (section === 'first') {
-        return `<span style="color: black;font-weight: bold;">${KIND_STATUS_NAME[content.kind]}过的第一${KIND_UNITS[content.kind]}${KIND_NAMES[content.kind]}</span>
+        return `<span style="color: black;font-weight: bold;">${KIND_DETAILS[content.kind].STATUS_NAME}过的第一${KIND_DETAILS[content.kind].UNIT}${KIND_DETAILS[content.kind].NAME}</span>
           ${dayjs(content.time).format('YYYY-MM-DD')}`
       } else {
         return dayjs(content.time).format('YYYY-MM-DD') + '  ' + KIND_STATUS[content.kind + '-' + content.status]
@@ -201,6 +208,9 @@ export default {
     },
     goToMyInfo () {
       uni.navigateTo({url: 'MyInfo'})
+    },
+    goToAdmin () {
+      uni.navigateTo({url: 'Admin'})
     },
     goToMyComments () {
       uni.navigateTo({url: 'MyComments'})

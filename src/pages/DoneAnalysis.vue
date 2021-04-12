@@ -3,10 +3,10 @@
     <view class="user-info-container" v-if="userInfo && analysisData.total">
       <image :src="userInfo.avatarUrl || '/static/images/default_avatar.png'" style="width: 80rpx;height: 80rpx;border-radius: 50%;grid-area: a;"></image>
       <span style="grid-area: b;font-size: 28rpx;font-weight: bold;">{{userInfo.nickName}}</span>
-      <span style="grid-area: c;font-size: 20rpx;color: #999;">在书影音社区一共标记{{KIND_STATUS_NAME[kind]}}过</span>
+      <span style="grid-area: c;font-size: 20rpx;color: #999;">在书影音社区一共标记{{KIND_DETAILS[kind].STATUS_NAME}}过</span>
       <span style="grid-area: d;font-weight: bold;font-size: 20rpx;text-align: center;">
         <span style="font-size: 40rpx;">{{analysisData.total}}</span><br />
-        {{KIND_UNITS[kind] + KIND_NAMES[kind]}}
+        {{KIND_DETAILS[kind].UNIT + KIND_DETAILS[kind].NAME}}
       </span>
     </view>
     <!-- 展示 -->
@@ -30,10 +30,10 @@
     </view>
     <!-- 最常看的类型 -->
     <view class="type-info-container" v-if="sortedTypeTags.length" style="font-weight: bold;">
-      <view class="analysis-item-title" style="margin-top: 230rpx;">最常{{KIND_STATUS_NAME[kind]}}的类型</view>
+      <view class="analysis-item-title" style="margin-top: 230rpx;">最常{{KIND_DETAILS[kind].STATUS_NAME}}的类型</view>
       <view v-for="item in sortedTypeTags" :key="item[0]" class="type-container" style="position: relative;margin-bottom: 4rpx;font-size: 20rpx;overflow: hidden;">
         <view class="type-container__type-container">
-          <image :src="TYPE_ICONS_URL[kind][item[0]].imgUrl" style="width: 34rpx;height: 34rpx;border-radius: 50%;margin-right: 10rpx;"></image>
+          <image :src="KIND_DETAILS[kind].TYPE_ICONS_URL[item[0]].imgUrl" style="width: 34rpx;height: 34rpx;border-radius: 50%;margin-right: 10rpx;"></image>
           <span>{{item[0]}}</span>
         </view>
         <view class="type-container__num-container">
@@ -44,14 +44,14 @@
     </view>
     <!-- 年份分布 -->
     <view class="publish-year-info-container" v-if="yearDataSeries.length">
-      <view class="analysis-item-title" style="margin-bottom: 0;">{{KIND_NAMES[kind]}}年份分布</view>
+      <view class="analysis-item-title" style="margin-bottom: 0;">{{KIND_DETAILS[kind].NAME}}年份分布</view>
       <view class="year-pie-chart">
 		    <canvas canvas-id="canvasPie" id="canvasPie" class="year-pie-chart"></canvas>
       </view>
     </view>
     <!-- 地区分布 -->
     <view class="country-info-container" v-if="countryDataSeries.length">
-      <view class="analysis-item-title">{{KIND_NAMES[kind]}}地区分布</view>
+      <view class="analysis-item-title">{{KIND_DETAILS[kind].NAME}}地区分布</view>
       <view class="country-arcbar-chart-wrapper">
 			  <canvas v-for="i in 6" :key="i" :canvas-id="'canvasArcbar' + i" :id="'canvasArcbar' + i" class="country-arcbar-chart"></canvas>
       </view>
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { KIND_STATUS_NAME, KIND_NAMES, KIND_UNITS, TYPE_ICONS_URL } from '@/constants/constants'
+import { KIND_DETAILS } from '@/constants/constants'
 import uCharts from '@/components/uCharts/u-charts.js'
 
 let canvaPie = null
@@ -79,11 +79,8 @@ export default {
     return {
       kind: null,
       userInfo: null,
-      KIND_STATUS_NAME,
-      KIND_NAMES,
-      KIND_UNITS,
+      KIND_DETAILS,
       analysisData: {},
-      TYPE_ICONS_URL,
       loading: false
     }
   },
@@ -113,7 +110,7 @@ export default {
             name: tmp[0],
             data: tmp[1],
             format: () => {
-              return `${tmp[0]}s  ${tmp[1]}${KIND_UNITS[this.kind]}`
+              return `${tmp[0]}s  ${tmp[1]}${KIND_DETAILS[this.kind].UNIT}`
             }
           }
         }).sort((a, b) => (b.data - a.data))

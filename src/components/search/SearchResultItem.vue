@@ -16,7 +16,7 @@
       </view>
       <view class="search-result-item__rate" v-else>暂无评分</view>
       <view style="font-size: 14rpx;color: #ccc;">
-        <span v-if="showTag" style="margin-right: 5rpx;color: black;display: inline-block;padding: 4rpx;background-color: #ddd;border-radius: 6rpx;">{{KIND_NAMES[item.kind]}}</span>
+        <span v-if="showTag" style="margin-right: 5rpx;color: black;display: inline-block;padding: 4rpx;background-color: #ddd;border-radius: 6rpx;">{{KIND_DETAILS[item.kind].NAME}}</span>
         <span>{{introduction}}</span>
       </view>
     </view>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { KIND_NAMES } from '@/constants/constants.js'
+import { KIND_DETAILS } from '@/constants/constants.js'
 
 export default {
   props: {
@@ -46,7 +46,7 @@ export default {
   },
   data () {
     return {
-      KIND_NAMES
+      KIND_DETAILS
     }
   },
   computed: {
