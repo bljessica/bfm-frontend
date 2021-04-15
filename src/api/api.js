@@ -9,6 +9,14 @@ export const getDetail = (data) => {
   })
 }
 
+export const deleteItem = (data) => {
+  return request({
+    url: '/deleteItem',
+    data,
+    method: 'DELETE'
+  })
+}
+
 // film
 export const getAllFilms = (data) => {
   return request({

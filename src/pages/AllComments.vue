@@ -20,7 +20,7 @@
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
       <view v-if="!comments.length && !loading" style="font-size: 26rpx;font-weight: bold;text-align: center;">暂无短评</view>
-      <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+      <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
     </view>
   </view>
 </template>

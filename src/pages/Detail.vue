@@ -45,7 +45,7 @@
       </view>
       <!-- 评论 -->
       <BriefComment :comment="comment" @getItemComments="getItemComments" v-for="comment in comments" :key="comment._id"></BriefComment>
-      <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+      <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
       <!-- 查看全部 -->
       <view style="display: flex;align-items: center;justify-content: space-between;height: 70rpx;" @click="goToAllComments">
         <view style="font-weight: bold;">查看全部短评</view>
@@ -53,6 +53,20 @@
       </view>
     </view>
     <view v-if="!loading && !comments.length" class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>
+    <view class="admin-actions-wrapper" v-if="isAdmin">
+      <span @click="performAdminAction('add')">添加{{kindName}}</span>
+      <span @click="performAdminAction('update')">修改{{kindName}}</span>
+      <span @click="performAdminAction('delete')">删除{{kindName}}</span>
+    </view>
+    <uni-popup v-if="kind" ref="deleteItemDialog" type="dialog">
+      <uni-popup-dialog 
+        mode="base" 
+        :title="'确认删除此' + KIND_DETAILS[kind].NAME + '吗？'" 
+        :before-close="true" 
+        @close="cancelDeleteItem" 
+        @confirm="deleteItem"
+      />
+    </uni-popup>
   </view>
 </template>
 
@@ -60,11 +74,15 @@
 import DetailScore from '@/components/detail/DetailScore.vue'
 import BriefComment from '@/components/comment/BriefComment.vue'
 import { KIND_DETAILS } from '@/constants/constants'
+import { uniPopup } from '@dcloudio/uni-ui'
+import uniPopupDialog from '@dcloudio/uni-ui/lib/uni-popup-dialog/uni-popup-dialog.vue'
 
 export default {
   components: {
     DetailScore,
-    BriefComment
+    BriefComment,
+    uniPopup,
+    uniPopupDialog
   },
   data () {
     return {
@@ -76,7 +94,8 @@ export default {
       commentsType: 'want',
       comments: [],
       loading: false,
-      KIND_DETAILS
+      KIND_DETAILS,
+      userInfo: null
     }
   },
   async onLoad (options) {
@@ -86,8 +105,15 @@ export default {
   async onShow () {
     await this.getDetail()
     await this.getItemComments()
+    await this.getUserInfo()
   },
   computed: {
+    isAdmin () {
+      return this.userInfo && this.userInfo.isAdmin
+    },
+    kindName () {
+      return this.kind && this.KIND_DETAILS[this.kind].NAME
+    },
     briefIntroduction() {
       if (!this.item) {
         return '暂无'
@@ -103,6 +129,45 @@ export default {
     }
   },
   methods: {
+    cancelDeleteItem (done) {
+      done()
+    },
+    async deleteItem (done) {
+      const res = await this.$api.deleteItem({
+        kind: this.kind,
+        _id: this._id,
+        openid: getApp().globalData.openid,
+        name: this.item.name
+      })
+      if (!res.data.code) {
+        done()
+        uni.showToast({
+          title: '删除成功',
+          icon: 'success'
+        })
+        uni.navigateBack()
+      } else {
+        done()
+        uni.showToast({
+          title: '删除失败',
+          icon: 'none'
+        })
+      }
+    },
+    async getUserInfo () {
+      const openid = getApp().globalData.openid
+      if (openid) {
+        const res = await this.$api.getUserInfo({
+          openid
+        })
+        this.userInfo = res.data.data
+      }
+    },
+    performAdminAction (actionType) {
+      if (actionType === 'delete') {
+        this.$refs.deleteItemDialog.open()
+      }
+    },
     goToAllComments () {
       uni.navigateTo({
         url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&myScore=${this.myScore}&commentsType=${this.commentsType}`
@@ -240,5 +305,24 @@ export default {
   box-sizing: border-box;
   padding: 20rpx;
   padding-bottom: 0;
+}
+.admin-actions-wrapper {
+  margin: 20rpx auto 0;
+  height: 100rpx;
+  width: 95%;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 10rpx;
+  &>span {
+    padding: 10rpx;
+    border-radius: 10rpx;
+    font-size: 22rpx;
+    background-color: #42BD56;
+    color: white;
+  }
 }
 </style>

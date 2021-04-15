@@ -13,7 +13,7 @@
       </view>
     </view>
     <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
-    <uni-load-more v-if="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
+    <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的信息 -->
     <view class="my-actions__item" v-if="userInfo" @click="goToMyInfo">
       <span>我的信息</span>

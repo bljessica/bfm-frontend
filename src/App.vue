@@ -13,5 +13,12 @@
 </script>
 
 <style>
-	/*每个页面公共css */
+/*每个页面公共css */
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  z-index: 1000;
+}
 </style>

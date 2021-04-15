@@ -12,7 +12,7 @@
         :status="status"
       />
     </view>
-    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 

@@ -12,7 +12,7 @@
     <view class="search-results-container" v-if="searchResults.length" style="width: 90%;margin: 0 auto;">
       <SearchResultItem v-for="item in searchResults" :item="item" :key="item._id" />
     </view>
-    <view v-if="!searchResults.length && !loading" style="color: #999;text-align: center;font-size: 26rpx;margin-top: 20rpx;">暂无搜索结果</view>
+    <view v-if="!searchResults.length && !loading" class="loading" style="color: #999;text-align: center;font-size: 26rpx;margin-top: 20rpx;">暂无搜索结果</view>
   </view>
 </template>
 

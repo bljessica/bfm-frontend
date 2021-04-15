@@ -58,7 +58,7 @@
     </view>
     <!-- 暂无分析 -->
     <view v-if="!analysisData.total && !loading" style="font-size: 26rpx;font-weight: bold;text-align: center;margin-top: 20rpx;">暂无观影分析</view>
-    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 

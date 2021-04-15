@@ -24,14 +24,13 @@
       <uni-popup-dialog 
         mode="input" 
         title="请输入昵称" 
-        :duration="0" 
         :before-close="true" 
         @close="cancelEditingNickname" 
         @confirm="editNickname"
       />
     </uni-popup>
     <!-- 加载图标 -->
-    <uni-load-more v-if="!userInfo && loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-load-more v-if="!userInfo && loading" class="loading" iconType="circle" status="loading"></uni-load-more>
   </view>
 </template>
 

@@ -9,7 +9,7 @@
     <view class="book-sections-container" style="width: 90%;margin: 20rpx auto 0;">
       <CommonSection v-for="item in bookSectionTitles" :showNum="false" :seekMore="true" :key="item" :items="books[item]" kind="book" :sectionTitle="item"></CommonSection>
     </view>
-    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
 	</view>
 </template>
 
@@ -27,7 +27,7 @@ export default {
       loading: false
     }
   },
-  mounted () {
+  onShow () {
     this.loading = true
     this.bookSectionTitles.forEach(async(title) => {
       const res = await this.$api.getAllBooksByType({ type: title, pageIdx: 1, pageSize: 4})

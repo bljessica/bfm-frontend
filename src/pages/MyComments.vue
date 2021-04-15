@@ -28,12 +28,11 @@
         暂无评论，快去标记吧~
       </view>
     </view>
-    <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
+    <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading"></uni-load-more>
     <uni-popup ref="editingCommentDialog" type="dialog">
       <uni-popup-dialog 
         mode="input" 
         title="请输入评论内容" 
-        :duration="0" 
         :before-close="true" 
         @close="cancelEditingComment" 
         @confirm="editComment"
@@ -91,6 +90,10 @@ export default {
         comment: value
       })
       done()
+      uni.showToast({
+        title: '修改成功',
+        icon: 'success'
+      })
       this.editingCommentId = null
       await this.getUserComments()
     },
