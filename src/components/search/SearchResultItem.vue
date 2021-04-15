@@ -1,6 +1,6 @@
 <template>
   <view class="search-result-item-container" @click="goToDetail">
-    <image :src="item.coverSrc || '/static/images/book.png'" style="width: 100rpx;height: 130rpx;"></image>
+    <image :src="item.coverSrc || '/static/images/addItem/' + itemKind + '_default.png'" style="width: 100rpx;height: 130rpx;"></image>
     <view class="search-result-item__info"
       :style="{borderBottom: showBorder ? '1px solid #ccc' : 'none'}">
       <view style="font-size: 20rpx;display: flex;align-items: center;">

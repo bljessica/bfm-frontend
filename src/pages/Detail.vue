@@ -2,7 +2,7 @@
   <view style="background: #F3F7F6;min-height: 100vh;">
     <!-- 信息 -->
     <view class="detail-title">
-      <image :src="item.coverSrc" style="width: 180rpx;height: 240rpx;grid-area: a;"></image>
+      <image :src="item.coverSrc || '/static/images/addItem/' + kind + '_default.png'" style="width: 180rpx;height: 240rpx;grid-area: a;"></image>
       <h3>{{item.name}}</h3>
       <view class="detail-title__introduction">{{briefIntroduction}}</view>
       <view class="detail-title__buttons" style="grid-area: d / d / e / e;display: flex;justify-content: space-between;">
