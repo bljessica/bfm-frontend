@@ -17,6 +17,14 @@ export const deleteItem = (data) => {
   })
 }
 
+export const addItem = (data) => {
+  return request({
+    url: '/addItem',
+    data,
+    method: 'POST'
+  })
+}
+
 // film
 export const getAllFilms = (data) => {
   return request({

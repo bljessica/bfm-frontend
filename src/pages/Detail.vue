@@ -166,6 +166,10 @@ export default {
     performAdminAction (actionType) {
       if (actionType === 'delete') {
         this.$refs.deleteItemDialog.open()
+      } else {
+        uni.navigateTo({
+          url: `AdminAction?kind=${this.kind}&_id=${this._id}&actionType=${actionType}`
+        })
       }
     },
     goToAllComments () {

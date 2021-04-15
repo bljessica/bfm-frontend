@@ -1,6 +1,6 @@
 <template>
   <view class="common-card" @click="goToDetail" style="width: 150rpx;height: 240rpx;display: flex;flex-direction: column;font-size: 24rpx;align-items: start;justify-content: space-between;">
-    <image :src="item.coverSrc || '/static/images/book.png'" style="width: 150rpx;height: 200rpx;"></image>
+    <image :src="item.coverSrc || '/static/images/addItem/' + kind + '_default.png'" style="width: 150rpx;height: 200rpx;"></image>
     <view class="common-card__name" style="font-weight: bold;font-size: 20rpx;margin: 10rpx 0;width: 150rpx;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;">
       {{ item.name }}
     </view>
