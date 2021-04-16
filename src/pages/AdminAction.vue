@@ -39,14 +39,14 @@ export default {
       errorMsg: {}
     }
   },
-  onLoad (options) {
+  async onLoad (options) {
     this.kind = options.kind
     this._id = options._id
     this.actionType = options.actionType
     wx.setNavigationBarTitle({
       title: (this.actionType === 'add' ? '添加' : '修改') + KIND_DETAILS[this.kind].NAME
     })
-    this.initItem()
+    await this.initItem()
     this.initTypeOptions()
   },
   methods: {
@@ -120,10 +120,19 @@ export default {
     async handleSubmit () {
       this.errorMsg = {}
       if (this.validateData()) {
-        const res = await this.$api.addItem({
-          kind: this.kind,
-          info: this.itemInfo
-        })
+        let res = null
+        if (this.actionType === 'add') {
+          res = await this.$api.addItem({
+            kind: this.kind,
+            info: this.itemInfo
+          })
+        } else if (this.actionType === 'update') {
+          res = await this.$api.updateItem({
+            kind: this.kind,
+            _id: this._id,
+            info: this.itemInfo
+          })
+        }
         uni.showToast({
           title: res.data.msg,
           icon: 'none'
@@ -135,11 +144,23 @@ export default {
         }
       }
     },
-    initItem () {
-      this.itemInfo = this.ADD_ITEM_TEMPLATE[this.kind].reduce((acc, cur) => {
-        acc[cur.value] = cur.default
-        return acc
-      }, {})
+    async initItem () {
+      if (this.actionType === 'add') {
+        this.itemInfo = this.ADD_ITEM_TEMPLATE[this.kind].reduce((acc, cur) => {
+          acc[cur.value] = cur.default
+          return acc
+        }, {})
+      } else if (this.actionType === 'update') {
+        const res = await this.$api.getDetail({
+          kind: this.kind,
+          _id: this._id
+        })
+        const data = res.data.data
+        this.itemInfo = this.ADD_ITEM_TEMPLATE[this.kind].reduce((acc, cur) => {
+          acc[cur.value] = data[cur.value] || cur.default
+          return acc
+        }, {})
+      }
       this.errorMsg = {}
     }
   }

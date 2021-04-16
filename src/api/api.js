@@ -25,6 +25,14 @@ export const addItem = (data) => {
   })
 }
 
+export const updateItem = (data) => {
+  return request({
+    url: '/updateItem',
+    data,
+    method: 'PUT'
+  })
+}
+
 // film
 export const getAllFilms = (data) => {
   return request({

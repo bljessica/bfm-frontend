@@ -203,9 +203,7 @@ export default {
         _id: this._id,
         openid: getApp().globalData.openid
       })
-      if (!this.item) {
-        this.item = res.data.data
-      }
+      this.item = res.data.data
       this.status = res.data.status
       this.myScore = (res.data.myScore === null || res.data.myScore === undefined) ? -1 : res.data.myScore
     },
