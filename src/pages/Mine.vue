@@ -168,7 +168,7 @@ export default {
   methods: {
     goToAdminLogin () {
       uni.navigateTo({
-        url: 'AdminLogin'
+        url: 'admin/AdminLogin'
       })
     },
     async refresh () {

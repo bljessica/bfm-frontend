@@ -67,7 +67,7 @@ export default {
     },
     editUserInfo (openid) {
       uni.navigateTo({
-        url: 'MyInfo?openid=' + openid
+        url: '/pages/MyInfo?openid=' + openid
       })
     }
   }
