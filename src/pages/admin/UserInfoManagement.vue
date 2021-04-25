@@ -86,7 +86,6 @@ export default {
 .user-info-container__action-button {
   padding: 6rpx;
   border-radius: 4rpx;
-  border: 1px solid #ddd;
   font-size: 20rpx;
   color: #fff;
 }
