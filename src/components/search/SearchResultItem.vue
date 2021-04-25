@@ -42,6 +42,9 @@ export default {
     },
     kind: {
       type: String
+    },
+    actionType: {
+      type: String
     }
   },
   data () {
@@ -69,7 +72,7 @@ export default {
   methods: {
     goToDetail () {
       uni.navigateTo({
-        url: 'Detail?_id=' + this.item._id + '&kind=' + this.itemKind
+        url: 'Detail?_id=' + this.item._id + '&kind=' + this.itemKind +'&actionType=' + this.actionType
       })
     }
   }

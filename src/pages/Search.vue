@@ -10,7 +10,7 @@
     <uni-load-more v-if="loading" iconType="circle" status="loading"></uni-load-more>
     <!-- 搜索结果 -->
     <view class="search-results-container" v-if="searchResults.length" style="width: 90%;margin: 0 auto;">
-      <SearchResultItem v-for="item in searchResults" :item="item" :key="item._id" />
+      <SearchResultItem v-for="item in searchResults" :actionType="actionType" :item="item" :key="item._id" />
     </view>
     <view v-if="!searchResults.length && !loading" class="loading" style="color: #999;text-align: center;font-size: 26rpx;margin-top: 20rpx;">暂无搜索结果</view>
   </view>
@@ -29,17 +29,34 @@ export default {
       searchText: '',
       loading: false,
       searchResults: [],
-      focus: false
+      focus: false,
+      type: 'all',
+      actionType: null
     }
+  },
+  onLoad (options) {
+    this.type = options.type || 'all'
+    this.actionType = options.actionType
+  },
+  methods: {
+    async search () {
+      this.loading = true
+      const res = await this.$api.search({
+        searchText: this.searchText,
+        type: this.type
+      })
+      this.searchResults = res.data.data
+      this.loading = false
+    }
+  },
+  async onShow () {
+    await this.search()
   },
   watch: {
     searchText: {
       handler: debounce(async function (val) {
         if (val) {
-          this.loading = true
-          const res = await this.$api.search({searchText: val})
-          this.searchResults = res.data.data
-          this.loading = false
+          await this.search()
         } else {
           this.searchResults = []
         }

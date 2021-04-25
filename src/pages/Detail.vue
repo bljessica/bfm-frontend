@@ -23,19 +23,19 @@
     <!-- 分数 -->
     <DetailScore :score="item.score" :my-score="myScore"></DetailScore>
     <!-- 简介 -->
-    <view style="width: 95%;margin: 60rpx auto;">
+    <view style="width: 95%;margin: 60rpx auto;" v-if="actionType !== 'admin'">
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">简介</view>
       <view style="font-size: 22rpx;line-height: 40rpx;">{{item.introduction || '暂无'}}</view>
     </view>
     <!-- 影人 -->
-    <view style="width: 95%;margin: 60rpx auto;" v-if="kind === 'film'">
+    <view style="width: 95%;margin: 60rpx auto;" v-if="kind === 'film' && actionType !== 'admin'">
       <view style="font-size: 30rpx;font-weight: bold;margin-bottom: 20rpx;">影人</view>
       <view style="font-size: 22rpx;line-height: 40rpx;">
         {{item.director}}<br />{{item.actors}}
       </view>
     </view>
     <!-- 短评 -->
-    <view class="brief-comments-container" v-if="comments.length">
+    <view class="brief-comments-container" v-if="comments.length && actionType !== 'admin'">
       <!-- 标题 -->
       <view class="brief-comments-container__title" @click="goToAllComments" style="display: flex;justify-content: space-between;align-items: center;">
         <span style="font-size: 26rpx;font-weight: bold;">短评</span>
@@ -52,11 +52,12 @@
         <image src="/static/images/right_arrow.png" style="width: 20rpx;height: 20rpx;"></image>
       </view>
     </view>
-    <view v-if="!loading && !comments.length" class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">暂无短评</view>
-    <view class="admin-actions-wrapper" v-if="isAdmin">
-      <span @click="performAdminAction('add')">添加{{kindName}}</span>
-      <span @click="performAdminAction('update')">修改{{kindName}}</span>
-      <span @click="performAdminAction('delete')">删除{{kindName}}</span>
+    <view v-if="!loading && !comments.length && actionType !== 'admin'" class="brief-comments-container" style="font-size: 26rpx;font-weight: bold;text-align: center;padding-bottom: 20rpx;">
+      暂无短评
+    </view>
+    <view class="admin-actions-wrapper" v-if="actionType === 'admin'">
+      <span @click="performAdminAction('update')" style="background-color: #40bd55;">修改{{kindName}}</span>
+      <span @click="performAdminAction('delete')" style="background-color: #d9230b;">删除{{kindName}}</span>
     </view>
     <uni-popup v-if="kind" ref="deleteItemDialog" type="dialog">
       <uni-popup-dialog 
@@ -95,12 +96,14 @@ export default {
       comments: [],
       loading: false,
       KIND_DETAILS,
-      userInfo: null
+      userInfo: null,
+      actionType: null
     }
   },
   async onLoad (options) {
     this.kind = options.kind
     this._id = options._id
+    this.actionType = options.actionType
   },
   async onShow () {
     await this.getDetail()
@@ -108,9 +111,6 @@ export default {
     await this.getUserInfo()
   },
   computed: {
-    isAdmin () {
-      return this.userInfo && this.userInfo.isAdmin
-    },
     kindName () {
       return this.kind && this.KIND_DETAILS[this.kind].NAME
     },
@@ -136,7 +136,6 @@ export default {
       const res = await this.$api.deleteItem({
         kind: this.kind,
         _id: this._id,
-        openid: getApp().globalData.openid,
         name: this.item.name
       })
       if (!res.data.code) {
@@ -168,7 +167,7 @@ export default {
         this.$refs.deleteItemDialog.open()
       } else {
         uni.navigateTo({
-          url: `AdminAction?kind=${this.kind}&_id=${this._id}&actionType=${actionType}`
+          url: `admin/AdminAction?kind=${this.kind}&_id=${this._id}&actionType=${actionType}`
         })
       }
     },
@@ -315,7 +314,7 @@ export default {
   box-sizing: border-box;
   padding: 0 20rpx;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: #fff;
   border-radius: 10rpx;
@@ -324,7 +323,8 @@ export default {
     border-radius: 10rpx;
     font-size: 22rpx;
     background-color: #42BD56;
-    color: white;
+    color: #fff;
+    margin: 0 10rpx;
   }
 }
 </style>

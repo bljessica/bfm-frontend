@@ -3,8 +3,8 @@
     <view v-for="user in allUserInfo" :key="user._id" class="user-info-container">
       <image :src="user.avatarUrl || '/static/images/default_avatar.png'" style="width: 80rpx;height: 80rpx;border-radius: 50%;"></image>
       <span style="flex: 1;">{{user.nickName}}</span>
-      <span class="user-info-container__action-button" @click="editUserInfo(user.openid)">编辑</span>
-      <span class="user-info-container__action-button" @click="openDeleteUserDialog(user.openid)">删除</span>
+      <span class="user-info-container__action-button" @click="editUserInfo(user.openid)" style="background-color: #40bd55;">编辑</span>
+      <span class="user-info-container__action-button" @click="openDeleteUserDialog(user.openid)" style="background-color: #d9230b;">删除</span>
     </view>
     <view v-if="!allUserInfo.length && !loading" style="font-size: 26rpx;text-align: center;color: #999;">暂无用户</view>
     <uni-load-more class="loading" v-if="loading" iconType="circle" status="loading"></uni-load-more>
@@ -88,5 +88,6 @@ export default {
   border-radius: 4rpx;
   border: 1px solid #ddd;
   font-size: 20rpx;
+  color: #fff;
 }
 </style>

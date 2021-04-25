@@ -1,5 +1,5 @@
 <template>
-  <view class="admin-login-page-container" style="margin: 200rpx auto;width: 440rpx;">
+  <view class="admin-login-page-container" style="margin: 300rpx auto;width: 440rpx;">
     <view>用户名：Admin</view>
     <view style="margin-top: 30rpx;display: flex;align-items: center;">
       <span>密码：</span>

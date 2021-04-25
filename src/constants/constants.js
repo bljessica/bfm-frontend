@@ -166,11 +166,11 @@ export const ADMIN_ACTIONS = {
     actions: [
       {
         name: '添加图书',
-        url: 'AdminAction?kind=book$actionType=add'
+        url: 'AdminAction?kind=book&actionType=add'
       },
       {
         name: '修改/删除图书',
-        url: ''
+        url: '/pages/Search?type=book&actionType=admin'
       }
     ]
   },
@@ -179,11 +179,11 @@ export const ADMIN_ACTIONS = {
     actions: [
       {
         name: '添加电影',
-        url: ''
+        url: 'AdminAction?kind=film&actionType=add'
       },
       {
         name: '修改/删除电影',
-        url: ''
+        url: '/pages/Search?type=film&actionType=admin'
       }
     ]
   },
@@ -192,11 +192,11 @@ export const ADMIN_ACTIONS = {
     actions: [
       {
         name: '添加音乐',
-        url: ''
+        url: 'AdminAction?kind=music&actionType=add'
       },
       {
         name: '修改/删除音乐',
-        url: ''
+        url: '/pages/Search?type=music&actionType=admin'
       }
     ]
   },
