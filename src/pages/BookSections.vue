@@ -38,7 +38,7 @@ export default {
   methods: {
     goToSearch () {
       uni.navigateTo({
-        url: 'Search'
+        url: '/pages/Search'
       })
     }
   }

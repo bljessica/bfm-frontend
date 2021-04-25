@@ -72,7 +72,7 @@ export default {
   methods: {
     goToDetail () {
       uni.navigateTo({
-        url: 'Detail?_id=' + this.item._id + '&kind=' + this.itemKind +'&actionType=' + this.actionType
+        url: '/pages/Detail?_id=' + this.item._id + '&kind=' + this.itemKind +'&actionType=' + this.actionType
       })
     }
   }

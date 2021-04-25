@@ -167,13 +167,13 @@ export default {
         this.$refs.deleteItemDialog.open()
       } else {
         uni.navigateTo({
-          url: `admin/AdminAction?kind=${this.kind}&_id=${this._id}&actionType=${actionType}`
+          url: `/pages/admin/AdminAction?kind=${this.kind}&_id=${this._id}&actionType=${actionType}`
         })
       }
     },
     goToAllComments () {
       uni.navigateTo({
-        url: `AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&myScore=${this.myScore}&commentsType=${this.commentsType}`
+        url: `/pages/comment/AllComments?kind=${this.kind}&name=${this.item.name}&score=${this.item.score}&myScore=${this.myScore}&commentsType=${this.commentsType}`
       })
     },
     async getItemComments () {
@@ -209,7 +209,7 @@ export default {
     async addRecord (status) {
       if (!getApp().globalData.openid) {
         uni.switchTab({
-          url: '/pages/Mine'
+          url: '/pages/mine/Mine'
         })
         uni.showToast({
           icon: 'none',
@@ -234,7 +234,7 @@ export default {
           pageName = 'AfterComment'
         }
         uni.navigateTo({
-          url: pageName + '?kind=' + this.kind + '&name=' + escape(this.item.name)
+          url: '/pages/comment/' + pageName + '?kind=' + this.kind + '&name=' + escape(this.item.name)
         })
       }
     }

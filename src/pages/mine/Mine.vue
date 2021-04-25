@@ -168,7 +168,7 @@ export default {
   methods: {
     goToAdminLogin () {
       uni.navigateTo({
-        url: 'admin/AdminLogin'
+        url: '/pages/admin/AdminLogin'
       })
     },
     async refresh () {
@@ -199,17 +199,17 @@ export default {
     },
     goToDoneAnalysis (kind) {
       uni.navigateTo({
-        url: 'DoneAnalysis?kind=' + kind
+        url: '/pages/mine/DoneAnalysis?kind=' + kind
       })
     },
     goToMyBFM () {
-      uni.navigateTo({url: 'MyBFM'})
+      uni.navigateTo({url: '/pages/mine/MyBFM'})
     },
     goToMyInfo () {
-      uni.navigateTo({url: 'MyInfo?openid=' + getApp().globalData.openid})
+      uni.navigateTo({url: '/pages/mine/MyInfo?openid=' + getApp().globalData.openid})
     },
     goToUserComments () {
-      uni.navigateTo({url: 'UserComments?openid=' + getApp().globalData.openid})
+      uni.navigateTo({url: '/pages/comment/UserComments?openid=' + getApp().globalData.openid})
     },
     async getFilmTagAnalysis () {
       const res = await this.$api.getFilmTagAnalysis({

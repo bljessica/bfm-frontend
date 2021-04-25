@@ -55,11 +55,11 @@ export default {
   methods: {
     goToBookType () {
       uni.navigateTo({
-        url: 'Books?type=' + this.sectionTitle
+        url: '/pages/Books?type=' + this.sectionTitle
       })
     },
     goToMyBFMStatus () {
-      uni.navigateTo({url: 'MyBFMStatus?kind=' + this.kind + '&status=' + this.status})
+      uni.navigateTo({url: '/pages/mine/MyBFMStatus?kind=' + this.kind + '&status=' + this.status})
     }
   }
 }

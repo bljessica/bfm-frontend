@@ -25,7 +25,7 @@ export default {
         })
         setTimeout(() => {
           uni.navigateTo({
-            url: 'Admin'
+            url: '/pages/admin/Admin'
           })
         }, 1000)
       } else {
