@@ -96,7 +96,7 @@
 			}
 		},
     {
-			"path": "pages/MyComments",
+			"path": "pages/UserComments",
 			"style": {
 				"navigationBarTitleText": "我的评论"
 			}

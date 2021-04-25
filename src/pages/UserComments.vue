@@ -12,6 +12,7 @@
     <view class="my-comments-wrapper__contents-wrapper">
       <view class="my-comments-wrapper__contents-wrapper__content" v-for="content in comments" :key="content.name">
         <view style="color: #898989;padding-top: 15rpx;border-top: 1px solid #eeeeee;">
+          <span v-if="showUsername" style="margin-right: 10rpx;color: #333;">{{content.user.nickName}}</span>
           <span>{{dayjs(content.time).format('YYYY-MM-DD HH:mm:ss')}}</span>
           <span style="float: right;" @click="deleteComment(content._id)">
             <image src="/static/images/mine/delete.png" class="comment-action-icon"></image>
@@ -61,7 +62,9 @@ export default {
       showCommentTypeOptions: false,
       comments: [],
       loading: false,
-      dayjs
+      dayjs,
+      openid: null,
+      showUsername: false
     }
   },
   watch: {
@@ -70,6 +73,15 @@ export default {
         await this.getUserComments()
       },
       immediate: true
+    }
+  },
+  onLoad (options) {
+    this.openid = options.openid
+    this.showUsername = options.showUsername || false
+    if (this.showUsername) {
+      wx.setNavigationBarTitle({
+        title: '评论管理'
+      })
     }
   },
   async onShow () {
@@ -105,10 +117,13 @@ export default {
     },
     async getUserComments () {
       this.loading = true
-      const res = await this.$api.getUserComments({
-        openid: getApp().globalData.openid,
+      const queryObj = {
         status: this.commentsType
-      })
+      }
+      if (this.openid) {
+        queryObj.openid = this.openid
+      }
+      const res = await this.$api.getUserComments(queryObj)
       this.comments = res.data.data
       this.loading = false
     },

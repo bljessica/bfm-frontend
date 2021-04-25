@@ -62,7 +62,7 @@
       </view>
     </view>
     <!-- 我的评论 -->
-    <view class="my-actions__item" v-if="userInfo" @click="goToMyComments">
+    <view class="my-actions__item" v-if="userInfo" @click="goToUserComments">
       <span>我的评论</span>
       <span>
         <span>全部</span>
@@ -81,7 +81,7 @@
             <view>{{KIND_STATUS[item._id.kind + '-' + item._id.status]}}</view>
             <view style="font-weight: bold;color: #2786e5;">{{item.count}}</view>
           </view>
-          <view v-if="!timeLineData[section].statistics.length" class="time-line-wrapper__section-blank" style="padding-left: 0;">
+          <view v-if="!timeLineData[section].statistics.length" class="time-line-wrapper__section-blank" style="padding-left: 0;display: block;">
             暂无统计数据，快去标记吧~
           </view>
         </view>
@@ -208,8 +208,8 @@ export default {
     goToMyInfo () {
       uni.navigateTo({url: 'MyInfo?openid=' + getApp().globalData.openid})
     },
-    goToMyComments () {
-      uni.navigateTo({url: 'MyComments'})
+    goToUserComments () {
+      uni.navigateTo({url: 'UserComments?openid=' + getApp().globalData.openid})
     },
     async getFilmTagAnalysis () {
       const res = await this.$api.getFilmTagAnalysis({
@@ -565,5 +565,6 @@ button {
   background-color: #fff;
   color: #a1a1a1;
   padding: 20rpx 0 20rpx 80rpx;
+  width: 100% !important;
 }
 </style>

@@ -209,7 +209,7 @@ export const ADMIN_ACTIONS = {
       },
       {
         name: '评论管理',
-        url: ''
+        url: '/pages/UserComments?showUsername=true'
       }
     ]
   }
