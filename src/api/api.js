@@ -93,6 +93,22 @@ export const updateUser = (data) => {
   })
 }
 
+export const getAllUserInfo = (data) => {
+  return request({
+    url: '/allUserInfo',
+    data,
+    method: 'GET'
+  })
+}
+
+export const deleteUser = (data) => {
+  return request({
+    url: '/user',
+    data,
+    method: 'DELETE'
+  })
+}
+
 // record
 export const addRecord = (data) => {
   return request({

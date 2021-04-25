@@ -51,10 +51,12 @@ export default {
       USER_GENDER,
       genderOptions: [],
       cityOptions: [],
-      loading: false
+      loading: false,
+      openid: null
     }
   },
-  onLoad () {
+  onLoad (options) {
+    this.openid = options.openid
     this.initSelectorOptions()
   },
   async onShow () {
@@ -66,7 +68,7 @@ export default {
     },
     async editNickname (done, value) {
       await this.$api.updateUser({
-        openid: getApp().globalData.openid,
+        openid: this.openid,
         nickName: value
       })
       done()
@@ -99,7 +101,7 @@ export default {
     async selectCity (e) {
       const val = e[0].name
       await this.$api.updateUser({
-        openid: getApp().globalData.openid,
+        openid: this.openid,
         city: val
       })
       this.userInfo.city = val
@@ -108,7 +110,7 @@ export default {
     async selectGender (e) {
       const val = e[0].id
       await this.$api.updateUser({
-        openid: getApp().globalData.openid,
+        openid: this.openid,
         gender: val
       })
       this.userInfo.gender = val
@@ -126,7 +128,7 @@ export default {
     async getUserInfo () {
       this.loading = true
       const res = await this.$api.getUserInfo({
-        openid: getApp().globalData.openid
+        openid: this.openid
       })
       const userInfo = res.data.data
       this.userInfo = Object.keys(USER_INFOS).reduce((acc, key) => {
@@ -171,7 +173,7 @@ export default {
               await that.$api.updateUser({
                 ...that.userInfo,
                 avatarUrl: base64,
-                openid: getApp().globalData.openid
+                openid: this.openid
               })
               that.showUpdateSuccessfullyMsg()
               await that.getUserInfo()

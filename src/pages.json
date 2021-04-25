@@ -112,6 +112,24 @@
 			"style": {
 				"navigationBarTitleText": "管理员操作"
 			}
+		},
+    {
+			"path": "pages/Admin",
+			"style": {
+				"navigationBarTitleText": "管理员操作"
+			}
+		},
+    {
+			"path": "pages/AdminLogin",
+			"style": {
+				"navigationBarTitleText": "管理员登陆"
+			}
+		},
+    {
+			"path": "pages/UserInfoManagement",
+			"style": {
+				"navigationBarTitleText": "用户信息管理"
+			}
 		}
 	],
 	"globalStyle": {

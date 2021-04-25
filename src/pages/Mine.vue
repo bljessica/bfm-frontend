@@ -1,5 +1,5 @@
 <template>
-  <view style="background-color: #f7f7f7;">
+  <view style="background-color: #f7f7f7;min-height: 100vh;">
     <view class="user-info-container">
       <image src="/static/images/mine/mine_background.png" style="width: 100%;height: 100%;position: absolute;top: 0;"></image>
       <image :src="(userInfo && userInfo.avatarUrl) || '/static/images/default_avatar.png'" style="width: 150rpx;height: 150rpx;border-radius: 50%;border: 3px solid white;z-index: 1;"></image>
@@ -13,6 +13,7 @@
       </view>
     </view>
     <button @click="logIn" v-if="!userInfo && !loading">授权登录</button>
+    <button @click="goToAdminLogin" v-if="!userInfo && !loading" style="margin-top: 40rpx;">管理员登录</button>
     <uni-load-more v-if="loading" class="loading" iconType="circle" status="loading" :contentText="{contentrefresh: ''}"></uni-load-more>
     <!-- 我的信息 -->
     <view class="my-actions__item" v-if="userInfo" @click="goToMyInfo">
@@ -65,13 +66,6 @@
       <span>我的评论</span>
       <span>
         <span>全部</span>
-        <image src="/static/images/right_arrow.png"></image>
-      </span>
-    </view>
-    <!-- 管理员入口-->
-    <view class="my-actions__item" v-if="userInfo && userInfo.isAdmin" @click="goToAdmin">
-      <span>管理员入口</span>
-      <span>
         <image src="/static/images/right_arrow.png"></image>
       </span>
     </view>
@@ -172,6 +166,11 @@ export default {
     }
   },
   methods: {
+    goToAdminLogin () {
+      uni.navigateTo({
+        url: 'AdminLogin'
+      })
+    },
     async refresh () {
       await this.getUserInfo()
       await this.getUserAnalysis()
@@ -207,10 +206,7 @@ export default {
       uni.navigateTo({url: 'MyBFM'})
     },
     goToMyInfo () {
-      uni.navigateTo({url: 'MyInfo'})
-    },
-    goToAdmin () {
-      uni.navigateTo({url: 'Admin'})
+      uni.navigateTo({url: 'MyInfo?openid=' + getApp().globalData.openid})
     },
     goToMyComments () {
       uni.navigateTo({url: 'MyComments'})
@@ -350,6 +346,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+button {
+  background-color: #fff;
+}
 .user-info-container {
   height: 340rpx;
   box-sizing: border-box;

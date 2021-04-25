@@ -159,3 +159,58 @@ export const USER_GENDER = {
   1: '男',
   2: '女'
 }
+
+export const ADMIN_ACTIONS = {
+  书籍管理: {
+    color: '#5feaa4',
+    actions: [
+      {
+        name: '添加图书',
+        url: 'AdminAction?kind=book$actionType=add'
+      },
+      {
+        name: '修改/删除图书',
+        url: ''
+      }
+    ]
+  },
+  电影管理: {
+    color: '#84c9cf',
+    actions: [
+      {
+        name: '添加电影',
+        url: ''
+      },
+      {
+        name: '修改/删除电影',
+        url: ''
+      }
+    ]
+  },
+  音乐管理: {
+    color: '#e5bbbe',
+    actions: [
+      {
+        name: '添加音乐',
+        url: ''
+      },
+      {
+        name: '修改/删除音乐',
+        url: ''
+      }
+    ]
+  },
+  用户管理: {
+    color: '#c6c3bb',
+    actions: [
+      {
+        name: '用户信息管理',
+        url: 'UserInfoManagement'
+      },
+      {
+        name: '评论管理',
+        url: ''
+      }
+    ]
+  }
+}

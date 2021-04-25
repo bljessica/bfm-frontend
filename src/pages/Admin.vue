@@ -1,23 +1,33 @@
 <template>
   <view class="admin-actions-container" style="min-height: 100vh;"> 
-    <view class="admin-actions-wrapper" 
-      v-for="kind in Object.keys(KIND_DETAILS)" 
+    <view 
+      style="margin: 24rpx auto 0;width: 80%;"
+      v-for="kind in Object.keys(ADMIN_ACTIONS)" 
       :key="kind"
-      :style="{border}"
+      :style="{color: ADMIN_ACTIONS[kind].color}"
     >
-      <span>添加{{KIND_DETAILS[kind].NAME}}</span>
-      <span>修改{{KIND_DETAILS[kind].NAME}}</span>
-      <span>删除{{KIND_DETAILS[kind].NAME}}</span>
+      <view>{{kind}}</view>
+      <view class="admin-actions-wrapper" :style="{borderColor: ADMIN_ACTIONS[kind].color}">
+        <span v-for="item in ADMIN_ACTIONS[kind].actions" :key="item.name" @click="goToActionPage(item.url)">
+          {{item.name}}
+        </span>
+      </view>
     </view>
   </view>
 </template>
 
 <script>
-import { KIND_DETAILS } from '@/constants/constants.js'
+import { ADMIN_ACTIONS } from '@/constants/constants.js'
+
 export default {
   data () {
     return {
-      KIND_DETAILS
+      ADMIN_ACTIONS
+    }
+  },
+  methods: {
+    goToActionPage (url) {
+      uni.navigateTo({url})
     }
   }
 }
@@ -25,18 +35,18 @@ export default {
 
 <style lang="scss" scoped>
 .admin-actions-wrapper {
-  margin: 20rpx auto 0;
   height: 160rpx;
-  width: 80%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   border: 1px solid #ddd;
   border-radius: 4rpx;
+  margin-top: 10rpx;
   &>span {
     padding: 16rpx;
     border: 1px solid #ddd;
     border-radius: 10rpx;
+    border-color: inherit;
   }
 }
 </style>
