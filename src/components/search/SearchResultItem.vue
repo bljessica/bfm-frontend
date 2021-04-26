@@ -11,7 +11,7 @@
         </span>
       </view>
       <view class="search-result-item__rate" v-if="item.score">
-        <uni-rate allow-half :size="8" :value="item.score / 2"/>
+        <uni-rate :readonly="true" allow-half :size="8" :value="item.score / 2"/>
         {{item.score}}
       </view>
       <view class="search-result-item__rate" v-else>暂无评分</view>

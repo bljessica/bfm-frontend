@@ -4,7 +4,7 @@
       <image style="grid-area: a;width: 50rpx;height: 50rpx;border-radius: 50%;" :src="comment.user.avatarUrl || '/static/images/default_avatar.png'"></image>
       <view style="grid-area: b;font-weight: bold;">{{comment.user.nickName}}</view>
       <view style="grid-area: c;display: flex;align-items: center;">
-        <uni-rate v-if="comment.score !== null && comment.score !== undefined" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
+        <uni-rate v-if="comment.score !== null && comment.score !== undefined" :readonly="true" style="margin-right: 10rpx;" allow-half :size="8" :value="comment.score / 2"/>
         <span style="font-size: 18rpx;color: #999;">{{formatedCommentTime}}</span>
       </view>
     </view>

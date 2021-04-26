@@ -4,12 +4,12 @@
     <view>大众评分</view>
     <view style="display: flex;flex-direction: column;align-items: center;">
       <h3 style="font-size: 50rpx;">{{score}}</h3>
-      <uni-rate allow-half :size="8" :value="score / 2" />
+      <uni-rate :readonly="true" allow-half :size="8" :value="score / 2" />
     </view>
     <!-- 我的评分 -->
     <view style="color: #999;font-size: 16rpx;">我的评分</view>
     <view style="margin-left: 10rpx;color: #999;display: flex;align-items: center;margin: 0 auto;font-size: 16rpx;">
-      <uni-rate style="display: inline-block;margin-right: 8rpx;" allow-half :size="6" :value="myScore / 2" />
+      <uni-rate :readonly="true" style="display: inline-block;margin-right: 8rpx;" allow-half :size="6" :value="myScore / 2" />
       <span>{{scoreDisplay}}</span>
     </view>
   </view>

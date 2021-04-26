@@ -5,7 +5,7 @@
       {{ item.name }}
     </view>
     <view style="display: flex;align-items: center;">
-      <uni-rate allow-half :size="8" :value="item.score / 2"/>
+      <uni-rate :readonly="true" allow-half :size="8" :value="item.score / 2"/>
       <span style="font-size: 18rpx;color: #999;margin-left: 10rpx;">{{item.score}}</span>
     </view>
   </view>

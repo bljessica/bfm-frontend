@@ -9,6 +9,7 @@
         v-if="showRate" 
         allow-half 
         :size="8" 
+        :readonly="true"
         :value="record.score / 2" 
         color="#7b7b7b" 
       />
